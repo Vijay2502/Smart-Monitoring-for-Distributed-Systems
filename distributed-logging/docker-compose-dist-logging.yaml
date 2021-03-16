@@ -67,17 +67,17 @@ services:
         CONNECT_INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
         CONNECT_REST_ADVERTISED_HOST_NAME: localhost
         CONNECT_PLUGIN_PATH: "/usr/share/java,/opt/connectors"
-        AWS_ACCESS_KEY_ID: "AKIA2ZWZXK3BWJX3TXK7"
-        AWS_SECRET_ACCESS_KEY: "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"
-        AWS_DEFAULT_REGION: "us-east-1"
+        AWS_ACCESS_KEY_ID: "****************************"
+        AWS_SECRET_ACCESS_KEY: "****************************************"
+        AWS_DEFAULT_REGION: "us-west-1"
     elasticsearch:
-      image: elasticsearch:6.4.2
+      image: elasticsearch:7.11.1
       expose:
         - 9200
       ports:
         - "9200:9200"
     kibana:
-      image: kibana:6.4.2
+      image: kibana:7.11.1
       links:
         - "elasticsearch"
       ports:

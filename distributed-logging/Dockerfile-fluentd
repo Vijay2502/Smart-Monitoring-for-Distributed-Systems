@@ -1,5 +1,7 @@
-FROM fluent/fluentd:v0.12-debian
+FROM fluent/fluentd:v1.6-debian-1
 
 ENV FLUENT_UID=0
-RUN mkdir /buffer
-RUN ["gem", "install", "fluent-plugin-kafka", "--no-rdoc", "--no-ri", "--version", "0.7.9"]
+USER root
+RUN mkdir -p /buffer
+# RUN chown root /buffer
+RUN ["gem", "install", "fluent-plugin-kafka", "--no-doc", "--version", "0.7.9"]
