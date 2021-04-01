@@ -8,8 +8,6 @@ class Sidebar extends Component {
             <nav>
                 <ul>
                     <li><NavLink to="/projects">About</NavLink></li>
-                    <li><a href="#">Paris</a></li>
-                    <li><a href="#">Tokyo</a></li>
                 </ul>
             </nav>);
     }
