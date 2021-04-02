@@ -1,0 +1,9 @@
+NAMESPACE     NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
+default       fluentd                 1/1     1            1           172m
+default       kafka                   1/1     1            1           173m
+default       kafka-connect           1/1     1            1           161m
+default       web                     1/1     1            1           161m
+default       zookeeper               1/1     1            1           175m
+kube-system   coredns                 2/2     2            2           5d2h
+monitoring    grafana                 1/1     1            1           106m
+monitoring    prometheus-deployment   1/1     1            1           120m

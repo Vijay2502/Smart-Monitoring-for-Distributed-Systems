@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose --file docker-compose-dist-logging.yaml convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: kafka-connect
+  name: kafka-connect
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: kafka-connect
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose --file docker-compose-dist-logging.yaml convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: kafka-connect
+    spec:
+      containers:
+        - env:
+            - name: AWS_ACCESS_KEY_ID
+              value: 'AKIA5L2YCQJCCCBTSI6D'
+            - name: AWS_DEFAULT_REGION
+              value: us-west-1
+            - name: AWS_SECRET_ACCESS_KEY
+              value: 'TY0w36NIOAF0+wHtriwWhIxg5+t/mj9hPlB9WvLo'
+            - name: CONNECT_BOOTSTRAP_SERVERS
+              value: kafka:9092
+            - name: CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR
+              value: "1"
+            - name: CONNECT_CONFIG_STORAGE_TOPIC
+              value: connect-config
+            - name: CONNECT_GROUP_ID
+              value: "1"
+            - name: CONNECT_INTERNAL_KEY_CONVERTER
+              value: org.apache.kafka.connect.json.JsonConverter
+            - name: CONNECT_INTERNAL_VALUE_CONVERTER
+              value: org.apache.kafka.connect.json.JsonConverter
+            - name: CONNECT_KEY_CONVERTER
+              value: org.apache.kafka.connect.json.JsonConverter
+            - name: CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE
+              value: "false"
+            - name: CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR
+              value: "1"
+            - name: CONNECT_OFFSET_STORAGE_TOPIC
+              value: connect-offset
+            - name: CONNECT_PLUGIN_PATH
+              value: /usr/share/java,/opt/connectors
+            - name: CONNECT_REST_ADVERTISED_HOST_NAME
+              value: localhost
+            - name: CONNECT_STATUS_STORAGE_REPLICATION_FACTOR
+              value: "1"
+            - name: CONNECT_STATUS_STORAGE_TOPIC
+              value: connect-status
+            - name: CONNECT_VALUE_CONVERTER
+              value: org.apache.kafka.connect.json.JsonConverter
+            - name: CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE
+              value: "false"
+          image: kafka-connect
+          name: kafka-connect
+          imagePullPolicy: Never
+          resources: {}
+      restartPolicy: Always
+status: {}
