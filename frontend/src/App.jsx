@@ -23,7 +23,10 @@ function App() {
 
 
           <footer className="footer">
-            <p>A Project by Akshit, Ayushman, Chaitanya & Vijay</p>
+            <p>A Project by Akshit Ahuja, Ayushman Mittal, Chaitanya Naik & Vijay Ghanshani</p>
+            <p>San Jose State University - MS Software Engineering</p>
+            <p>Under the guidance of Prof. Younghee Park</p>
+
           </footer>
         </ErrorBoundary>
       </BrowserRouter>

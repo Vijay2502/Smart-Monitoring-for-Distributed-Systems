@@ -4,22 +4,21 @@ header.navbar {
     text-align: center;
     font-size: 1rem;
     color: white;
-    height: 8vh;
-    box-sizing: border-box;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 /* Container for flexboxes */
 section.main-wrapper {
-    display: -webkit-flex;
     display: flex;
     height: 84vh;
 }
 
 /* Style the navigation menu */
 nav {
-    -webkit-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
+    flex: 0.75;
     background: #ccc;
     padding: 20px;
 }
@@ -32,9 +31,7 @@ nav ul {
 
 /* Style the content */
 article {
-    -webkit-flex: 3;
-    -ms-flex: 3;
-    flex: 3;
+    flex: 3.25;
     background-color: #f1f1f1;
     padding: 10px;
 }
@@ -42,12 +39,17 @@ article {
 /* Style the footer */
 footer {
     background-color: #777;
-    padding: 10px;
+    padding: 1rem;
     text-align: center;
     color: white;
-    height: 8vh;
     box-sizing: border-box;
 }
+
+.screen-wrapper {
+    padding: 2rem 1.5rem;
+}
+
+
 
 /* Responsive layout - makes the menu and the content (inside the section) sit on top of each other instead of next to each other */
 @media (max-width: 600px) {

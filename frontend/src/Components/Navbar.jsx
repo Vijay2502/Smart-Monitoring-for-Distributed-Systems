@@ -5,7 +5,9 @@ class Navbar extends Component {
     render() {
         return (
             <header className="navbar">
-                <h4 className="m-0">Smart Monitoring System</h4>
+                <div className="">
+                    <h4 className="m-0">Smart Monitoring System</h4>
+                </div>
             </header>
         );
     }
