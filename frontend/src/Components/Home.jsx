@@ -4,6 +4,9 @@ import {
     Route, Switch, withRouter
 } from "react-router-dom";
 import Projects from './Projects';
+import Files from './Files';
+import ProjectView from './ProjectView';
+import ProjectStatus from './ProjectStatus';
 
 class Home extends Component {
     state = {}
@@ -19,9 +22,19 @@ class Home extends Component {
                         <Route path={`${match.path}projects`}>
                             <Projects />
                         </Route>
-                        {/* <Route path={match.path}>
-                            <h3>Please select a topic.</h3>
-                        </Route> */}
+                        <Route path={`${match.path}files`}>
+                            <Files />
+                        </Route>
+                        <Route path={`${match.path}projectView/:name`}>
+                            <ProjectView />
+                        </Route>
+                        <Route path={`${match.path}projectStatus`}>
+                            <ProjectStatus />
+                        </Route>
+
+                        <Route path={`${match.path}`}>
+                            <Projects />
+                        </Route>
                     </Switch>
                 </article>
             </Fragment>

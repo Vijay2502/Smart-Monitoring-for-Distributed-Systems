@@ -7,7 +7,9 @@ class Sidebar extends Component {
         return (
             <nav>
                 <ul>
-                    <li><NavLink to="/projects">About</NavLink></li>
+                    <li><NavLink to="/projects">Projects</NavLink></li>
+                    <li><NavLink to="/files">Files</NavLink></li>
+                    <li><NavLink to="/projectStatus">Project Stats</NavLink></li>
                 </ul>
             </nav>);
     }

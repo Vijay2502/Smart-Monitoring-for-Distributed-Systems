@@ -2,6 +2,7 @@ var express = require('express');
 const AWS = require('aws-sdk');
 var multer = require('multer');
 var multerS3 = require('multer-s3');
+var sampleJson = require('../sample.json');
 
 const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, S3_URL } = process.env;
 
@@ -39,6 +40,12 @@ exports.getFiles = (req, res) => {
             res.json({ success: true, files: contents })
         }
     });
+}
+
+exports.getProjects = (req, res) => {
+
+
+    res.status(200).send(sampleJson);
 }
 
 exports.samplePostRoute = (req, res) => {

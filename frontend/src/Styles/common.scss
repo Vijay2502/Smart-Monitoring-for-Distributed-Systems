@@ -13,7 +13,7 @@ header.navbar {
 /* Container for flexboxes */
 section.main-wrapper {
     display: flex;
-    height: 84vh;
+    min-height: 84vh;
 }
 
 /* Style the navigation menu */
