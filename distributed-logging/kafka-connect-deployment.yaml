@@ -26,11 +26,11 @@ spec:
       containers:
         - env:
             - name: AWS_ACCESS_KEY_ID
-              value: 'AKIA5L2YCQJCCCBTSI6D'
+              value: ''
             - name: AWS_DEFAULT_REGION
               value: us-west-1
             - name: AWS_SECRET_ACCESS_KEY
-              value: 'TY0w36NIOAF0+wHtriwWhIxg5+t/mj9hPlB9WvLo'
+              value: ''
             - name: CONNECT_BOOTSTRAP_SERVERS
               value: kafka:9092
             - name: CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR
