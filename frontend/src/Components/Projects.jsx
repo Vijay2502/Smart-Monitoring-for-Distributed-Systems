@@ -34,7 +34,7 @@ class Projects extends Component {
                         </Col>
                     </Row>
 
-                    <Table striped bordered hover className="mt-4">
+                    <Table striped bordered hover responsive className="mt-4">
                         {projectList.length > 0 && <thead>
                             <tr>
                                 <th>#</th>

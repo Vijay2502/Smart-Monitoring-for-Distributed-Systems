@@ -17,7 +17,7 @@ exports.getFiles = (req, res) => {
     const id = req.params.id;
 
     const bucketParams = {
-        Bucket: "chets-bucket",
+        Bucket: "273-grubhub-images",
         Prefix: ""
     }
     // Call S3 to obtain a list of the objects in the bucket

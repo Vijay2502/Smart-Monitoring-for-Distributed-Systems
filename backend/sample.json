@@ -127,22 +127,214 @@
         {
             "name": "kube-node-lease",
             "status": "Active",
-            "age": "5d2h"
+            "age": "5d2h",
+            "deployments": [
+                {
+                    "name": "fluentd",
+                    "available": 1,
+                    "ready": "1/1",
+                    "age": "175m"
+                }
+            ],
+            "pods": [
+                {
+                    "name": "fluentd-6bd5466f54-v54vs",
+                    "ready": "1/1",
+                    "status": "Running",
+                    "restarts": 0,
+                    "age": "175m"
+                }
+            ],
+            "services": [
+                {
+                    "name": "fluentd",
+                    "type": "ClusterIP",
+                    "cluster-ip": "10.104.86.54",
+                    "external-ip": "<none>",
+                    "ports": "24224/TCP,24224/UDP",
+                    "age": "176m"
+                }
+            ]
         },
         {
             "name": "kube-public",
             "status": "Active",
-            "age": "5d2h"
+            "age": "5d2h",
+            "deployments": [
+                {
+                    "name": "fluentd",
+                    "available": 1,
+                    "ready": "1/1",
+                    "age": "175m"
+                }
+            ],
+            "pods": [
+                {
+                    "name": "fluentd-6bd5466f54-v54vs",
+                    "ready": "1/1",
+                    "status": "Running",
+                    "restarts": 0,
+                    "age": "175m"
+                },
+                {
+                    "name": "fluentd-6bd5466f54-v54vs",
+                    "ready": "1/1",
+                    "status": "Running",
+                    "restarts": 0,
+                    "age": "175m"
+                }
+            ],
+            "services": [
+                {
+                    "name": "fluentd",
+                    "type": "ClusterIP",
+                    "cluster-ip": "10.104.86.54",
+                    "external-ip": "<none>",
+                    "ports": "24224/TCP,24224/UDP",
+                    "age": "176m"
+                }
+            ]
         },
         {
             "name": "kube-system",
             "status": "Active",
-            "age": "5d2h"
+            "age": "5d2h",
+            "deployments": [
+                {
+                    "name": "coredns",
+                    "available": 2,
+                    "ready": "2/2",
+                    "age": "5d2h"
+                }
+            ],
+            "pods": [
+                {
+                    "name": "coredns-f9fd979d6-s8f2b",
+                    "ready": "1/1",
+                    "status": "Running",
+                    "restarts": 4,
+                    "age": "5d2h"
+                },
+                {
+                    "name": "coredns-f9fd979d6-w5dl2",
+                    "ready": "1/1",
+                    "status": "Running",
+                    "restarts": 4,
+                    "age": "5d2h"
+                },
+                {
+                    "name": "etcd-docker-desktop",
+                    "ready": "1/1",
+                    "status": "Running",
+                    "restarts": 4,
+                    "age": "5d2h"
+                },
+                {
+                    "name": "kube-apiserver-docker-desktop",
+                    "ready": "1/1",
+                    "status": "Running",
+                    "restarts": 4,
+                    "age": "5d2h"
+                },
+                {
+                    "name": "kube-controller-manager-docker-desktop",
+                    "ready": "1/1",
+                    "status": "Running",
+                    "restarts": 4,
+                    "age": "5d2h"
+                },
+                {
+                    "name": "kube-proxy-r98cf",
+                    "ready": "1/1",
+                    "status": "Running",
+                    "restarts": 4,
+                    "age": "5d2h"
+                },
+                {
+                    "name": "kube-scheduler-docker-desktop",
+                    "ready": "1/1",
+                    "status": "Running",
+                    "restarts": 4,
+                    "age": "5d2h"
+                },
+                {
+                    "name": "storage-provisioner",
+                    "ready": "1/1",
+                    "status": "Running",
+                    "restarts": 5,
+                    "age": "5d2h"
+                },
+                {
+                    "name": "vpnkit-controller",
+                    "ready": "1/1",
+                    "status": "Running",
+                    "restarts": 4,
+                    "age": "5d2h"
+                }
+            ],
+            "services": [
+                {
+                    "name": "kube-dns",
+                    "type": "ClusterIP",
+                    "cluster-ip": "10.96.0.10",
+                    "external-ip": "<none>",
+                    "ports": "53/UDP,53/TCP,9153/TCP",
+                    "age": "5d2h"
+                }
+            ]
         },
         {
             "name": "monitoring",
             "status": "Active",
-            "age": "127m"
+            "age": "127m",
+            "deployments": [
+                {
+                    "name": "grafana",
+                    "ready": "1/1",
+                    "available": "1",
+                    "age": "109m"
+                },
+                {
+                    "name": "prometheus-deployment",
+                    "ready": "1/1",
+                    "available": "1",
+                    "age": "123m"
+                }
+            ],
+            "pods": [
+                {
+                    "name": "grafana-64c89f57f7-cqf8s",
+                    "ready": "1/1",
+                    "status": "Running",
+                    "restarts": 0,
+                    "age": "109m"
+                },
+                {
+                    "name": "prometheus-deployment-599bbd9457-wrdc9",
+                    "ready": "1/1",
+                    "status": "Running",
+                    "restarts": 0,
+                    "age": "123m"
+                }
+            ],
+            "services": [
+                {
+                    "name": "grafana",
+                    "type": "NodePort",
+                    "cluster-ip": "10.110.55.191",
+                    "external-ip": "<none>",
+                    "port": "3000:32000/TCP",
+                    "age": "110m"
+                },
+                {
+                    "name": "prometheus-service",
+                    "type": "NodePort",
+                    "cluster-ip": "10.101.142.224",
+                    "external-ip": "<none>",
+                    "port": "9090:30000/TCP",
+                    "age": "116m"
+                }
+            ]
         },
         {
             "name": "test-ns",
