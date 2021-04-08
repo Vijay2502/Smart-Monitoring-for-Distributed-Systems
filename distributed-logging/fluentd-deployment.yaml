@@ -32,9 +32,9 @@ spec:
             - containerPort: 24224
               protocol: UDP
           resources: {}
-          volumeMounts:
-            - mountPath: /fluentd/etc
-              name: fluentd-claim0
+          # volumeMounts:
+          #   - mountPath: /fluentd/etc1
+          #     name: fluentd-claim0
       restartPolicy: Always
       volumes:
         - name: fluentd-claim0

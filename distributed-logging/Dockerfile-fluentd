@@ -1,7 +1,13 @@
-FROM fluent/fluentd:v1.6-debian-1
-
-ENV FLUENT_UID=0
+##FROM fluent/fluentd-kubernetes-daemonset:v1-debian-elasticsearch
+FROM fluent/fluentd-kubernetes-daemonset:v1.11-debian-kafka-1
+##FROM fluent/fluentd-kubernetes-daemonset:v1.1.3-debian-elasticsearch
+##ENV FLUENT_UID=0
 USER root
+RUN mkdir -p /fluentd/etc
+COPY fluent.conf /fluentd/etc/
+RUN chmod 777 -R /fluentd/etc/fluent.conf
+##USER root
 RUN mkdir -p /buffer
 # RUN chown root /buffer
-RUN ["gem", "install", "fluent-plugin-kafka", "--no-doc", "--version", "0.7.9"]
+## RUN ["gem", "install", "fluent-plugin-kafka", "--no-doc"]
+## RUN ["gem", "install", "fluent-plugin-kafka", "--no-doc", "--version", "0.7.9"]

@@ -1,0 +1,47 @@
+NAME              STATUS   AGE
+default           Active   5d2h
+kube-node-lease   Active   5d2h
+kube-public       Active   5d2h
+kube-system       Active   5d2h
+monitoring        Active   127m
+test-ns           Active   4d2h
+deployment:::::
+NAMESPACE     NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
+default       fluentd                 1/1     1            1           175m
+default       kafka                   1/1     1            1           176m
+default       kafka-connect           1/1     1            1           164m
+default       web                     1/1     1            1           164m
+default       zookeeper               1/1     1            1           178m
+kube-system   coredns                 2/2     2            2           5d2h
+monitoring    grafana                 1/1     1            1           109m
+monitoring    prometheus-deployment   1/1     1            1           123m
+
+Pods::::::
+NAMESPACE     NAME                                     READY   STATUS    RESTARTS   AGE
+default       fluentd-6bd5466f54-v54vs                 1/1     Running   0          175m
+default       kafka-7dd6897d89-tnd4v                   1/1     Running   0          176m
+default       kafka-connect-765768d45b-ksz6s           1/1     Running   0          164m
+default       web-79787db9-jq7vk                       1/1     Running   0          164m
+default       zookeeper-f6bf88fbb-6nbms                1/1     Running   0          178m
+kube-system   coredns-f9fd979d6-s8f2b                  1/1     Running   4          5d2h
+kube-system   coredns-f9fd979d6-w5dl2                  1/1     Running   4          5d2h
+kube-system   etcd-docker-desktop                      1/1     Running   4          5d2h
+kube-system   kube-apiserver-docker-desktop            1/1     Running   4          5d2h
+kube-system   kube-controller-manager-docker-desktop   1/1     Running   4          5d2h
+kube-system   kube-proxy-r98cf                         1/1     Running   4          5d2h
+kube-system   kube-scheduler-docker-desktop            1/1     Running   4          5d2h
+kube-system   storage-provisioner                      1/1     Running   5          5d2h
+kube-system   vpnkit-controller                        1/1     Running   4          5d2h
+monitoring    grafana-64c89f57f7-cqf8s                 1/1     Running   0          109m
+monitoring    prometheus-deployment-599bbd9457-wrdc9   1/1     Running   0          123m
+Services:
+NAMESPACE     NAME                 TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)                  AGE
+default       fluentd              ClusterIP      10.104.86.54     <none>        24224/TCP,24224/UDP      176m
+default       kafka                ClusterIP      10.111.113.141   <none>        9092/TCP                 177m
+default       kubernetes           ClusterIP      10.96.0.1        <none>        443/TCP                  5d2h
+default       web                  ClusterIP      10.101.155.219   <none>        8080/TCP                 165m
+default       web1                 LoadBalancer   10.105.27.127    localhost     80:32522/TCP             145m
+default       zookeeper            ClusterIP      10.99.26.154     <none>        2181/TCP                 179m
+kube-system   kube-dns             ClusterIP      10.96.0.10       <none>        53/UDP,53/TCP,9153/TCP   5d2h
+monitoring    grafana              NodePort       10.110.55.191    <none>        3000:32000/TCP           110m
+monitoring    prometheus-service   NodePort       10.101.142.224   <none>        9090:30000/TCP           116m
