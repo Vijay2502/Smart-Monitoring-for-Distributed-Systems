@@ -4,6 +4,7 @@ import Col from 'react-bootstrap/Col';
 import Axios from "axios";
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
+import { RandomColor } from '../RandomColor';
 
 class ProjectStatus extends Component {
     state = {
@@ -47,7 +48,7 @@ class ProjectStatus extends Component {
             },
             series: [{
                 name: "Count",
-                data: data,
+                data: data.map(curr => { return { y: curr, color: RandomColor() } }),
                 colorByPoint: true
             }],
             xAxis: {

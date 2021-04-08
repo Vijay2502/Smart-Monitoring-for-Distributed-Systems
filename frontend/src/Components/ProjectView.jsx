@@ -6,6 +6,7 @@ import { withRouter } from 'react-router';
 import Table from 'react-bootstrap/esm/Table';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import { RandomColor } from '../RandomColor';
 
 class ProjectView extends Component {
     state = {
@@ -48,7 +49,8 @@ class ProjectView extends Component {
 
         return {
             chart: {
-                type: 'pie'
+                type: 'pie',
+                colorCount: 1
             },
             title: {
                 text: title
@@ -65,7 +67,7 @@ class ProjectView extends Component {
             },
             series: [{
                 name: 'Count',
-                data: data
+                data: data.map(curr => { return { ...curr, color: RandomColor() } })
             }]
         };
     }
