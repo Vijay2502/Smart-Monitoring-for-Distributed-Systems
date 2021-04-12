@@ -16,7 +16,7 @@ class Home extends Component {
             <Fragment>
                 <Sidebar></Sidebar>
 
-                <article>
+                <article className="content">
 
                     <Switch>
                         <Route path={`${match.path}projects`}>
@@ -36,6 +36,14 @@ class Home extends Component {
                             <Projects />
                         </Route>
                     </Switch>
+
+
+                    <footer className="footer">
+                        <p>A Project by Akshit Ahuja, Ayushman Mittal, Chaitanya Naik & Vijay Ghanshani</p>
+                        <p>San Jose State University - MS Software Engineering</p>
+                        <p>Under the guidance of Prof. Younghee Park</p>
+
+                    </footer>
                 </article>
             </Fragment>
         );
