@@ -28,12 +28,13 @@ class Projects extends Component {
         return (
             <Fragment>
                 <div className="screen-wrapper">
-                    <Row className="border-bottom pb-3">
+                    <Row className="">
                         <Col>
                             <h2>Projects</h2>
                         </Col>
                     </Row>
 
+                    <div className="border-header"></div>
                     <Table striped bordered hover responsive className="mt-4">
                         {projectList.length > 0 && <thead>
                             <tr>

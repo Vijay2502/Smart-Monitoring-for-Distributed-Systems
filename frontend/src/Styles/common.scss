@@ -1,3 +1,5 @@
+@import './colors.scss';
+
 .App {
     width: 100%;
     height: 100vh;
@@ -8,7 +10,8 @@
 }
 
 header.navbar {
-    background-color: #666;
+    background: rgb(4,57,94);
+    background: linear-gradient(90deg, rgba(4,57,94,1) 0%, rgba(112,162,136,1) 100%);
     padding: 1rem;
     text-align: center;
     font-size: 1rem;
@@ -24,7 +27,7 @@ header.navbar {
 /* Style the navigation menu */
 nav {
     // flex: 0.75;
-    background: #ccc;
+    background: $primaryColor;
     padding: 20px;
 
     grid-column: 1 / 2;
@@ -54,7 +57,7 @@ article.content {
 
 /* Style the footer */
 footer {
-    background-color: #777;
+    background-color: grey;
     padding: 1rem;
     text-align: center;
     color: white;
@@ -66,7 +69,16 @@ footer {
     padding: 2rem; 
 }
 
-/* Responsive layout - makes the menu and the content (inside the section) sit on top of each other instead of next to each other */
+
+.border-header {
+    height: 10px;
+    width: 100%;
+    background: rgb(213,137,111);
+    background: linear-gradient(90deg, rgba(213,137,111,1) 0%, rgba(218,183,133,1) 100%);
+    margin: 1.5rem 0;
+}
+
+
 @media (max-width: 600px) {
     section {
         -webkit-flex-direction: column;

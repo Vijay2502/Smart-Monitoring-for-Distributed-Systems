@@ -24,11 +24,13 @@ class Files extends Component {
         return (
             <Fragment>
                 <div className="screen-wrapper">
-                    <Row className="border-bottom pb-3">
+                    <Row className="">
                         <Col>
                             <h2>Files</h2>
                         </Col>
                     </Row>
+
+                    <div className="border-header"></div>
                     <Row>
                         <Col>
                             {

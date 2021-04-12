@@ -66,13 +66,15 @@ class ProjectStatus extends Component {
         return (
             <Fragment>
                 <div className="screen-wrapper">
-                    <Row className="border-bottom pb-3">
+                    <Row className="">
                         <Col sm={12}>
-                            <h2>Project Status:</h2>
+                            <h2>Project Stats:</h2>
                         </Col>
                     </Row>
 
-                    <Row className="py-5">
+                    <div className="border-header"></div>
+
+                    <Row className="pb-3">
                         {
                             stats.length > 0 && stats.map(([curr, ...a]) => {
                                 return <Col sm={6} className="my-4">
