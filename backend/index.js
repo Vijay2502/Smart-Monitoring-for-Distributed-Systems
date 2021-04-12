@@ -33,6 +33,16 @@ app.get('/getProjects', project.getProjects);
 app.post('/postSample', project.samplePostRoute);
 
 
+// Kube APIs
+
+const kube = require('./actions/kubeAPIs');
+
+app.get('/getNamespaces', kube.getNamespaces);
+app.get('/getPods', kube.getPods);
+app.get('/getDeployments', kube.getDeployments);
+app.get('/getServices', kube.getServices);
+
+
 
 //start your server on port 3001
 app.listen(PORT, () => console.log(`Backend Server Listening on port ${PORT}`));
