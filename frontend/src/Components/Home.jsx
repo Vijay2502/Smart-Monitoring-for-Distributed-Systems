@@ -7,6 +7,7 @@ import Projects from './Projects';
 import Files from './Files';
 import ProjectView from './ProjectView';
 import ProjectStatus from './ProjectStatus';
+import FileView from './FileView';
 
 class Home extends Component {
     state = {}
@@ -30,6 +31,9 @@ class Home extends Component {
                         </Route>
                         <Route path={`${match.path}projectStatus`}>
                             <ProjectStatus />
+                        </Route>
+                        <Route path={`${match.path}fileView`}>
+                            <FileView />
                         </Route>
 
                         <Route path={`${match.path}`}>

@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Axios from "axios";
+import Table from 'react-bootstrap/Table';
+import { NavLink } from 'react-router-dom';
 
 class Files extends Component {
     state = {
@@ -33,7 +35,32 @@ class Files extends Component {
                     <div className="border-header"></div>
                     <Row>
                         <Col>
-                            {
+                            <Table striped bordered hover responsive variant="" className="mt-4" style={{ textAlign: "center" }}>
+                                {files.length > 0 && <thead>
+                                    <tr>
+                                        <th>File Name</th>
+                                        <th>Date Created</th>
+                                        <th>Size</th>
+                                        <th>View File</th>
+                                    </tr>
+                                </thead>}
+                                <tbody>
+                                    {
+                                        files.length > 0 && files.map((file, i) => {
+                                            let date = new Date(file.modified);
+
+                                            return <tr key={i}>
+                                                <td>{file.key}</td>
+                                                <td>{`${date.toLocaleDateString()}  ${date.toLocaleTimeString()}`}</td>
+                                                <td>{file.size}</td>
+                                                <td><NavLink to={{ pathname: `/fileView`, state: { key: file.actualKey } }}>View Details</NavLink></td>
+
+                                            </tr>
+                                        })
+                                    }
+                                </tbody>
+                            </Table>
+                            {/* {
                                 files.length > 0 && files.map(file => {
                                     return <div className="file" key={file.key}>
                                         {file.key}
@@ -41,7 +68,7 @@ class Files extends Component {
                                         {file.size}
                                     </div>
                                 })
-                            }
+                            } */}
                         </Col>
                     </Row>
                 </div>

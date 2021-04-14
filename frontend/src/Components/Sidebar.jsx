@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
 import { ProSidebar, Menu, MenuItem } from 'react-pro-sidebar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChartBar, faCoffee, faFolderOpen, faProjectDiagram } from '@fortawesome/free-solid-svg-icons'
+import { faChartBar, faFolderOpen, faProjectDiagram } from '@fortawesome/free-solid-svg-icons'
 
 class Sidebar extends Component {
     state = {}
@@ -11,7 +11,7 @@ class Sidebar extends Component {
 
         return (
             <nav>
-                <ProSidebar className="app-sidebar">
+                <ProSidebar className="app-sidebar" style={{ width: "100%" }}>
                     <Menu iconShape="square">
                         <MenuItem className={pathname === "/projects" && "selected"} icon={<FontAwesomeIcon icon={faProjectDiagram} />}><NavLink to="/projects">Projects</NavLink></MenuItem>
                         <MenuItem className={pathname === "/files" && "selected"} icon={<FontAwesomeIcon icon={faFolderOpen} />}><NavLink to="/files">Files</NavLink></MenuItem>

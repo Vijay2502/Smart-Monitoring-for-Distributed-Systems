@@ -29,6 +29,7 @@ app.use(express.json());
 const project = require('./actions/project');
 
 app.get('/getFiles/:id', project.getFiles);
+app.post('/readFile', project.readFile);
 app.get('/getProjects', project.getProjects);
 app.post('/postSample', project.samplePostRoute);
 

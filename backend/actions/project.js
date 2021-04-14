@@ -34,12 +34,34 @@ exports.getFiles = (req, res) => {
                         key: file.Key.split("/")[file.Key.split("/").length - 1],
                         modified: file.LastModified,
                         size: file.Size / 1000 + "KB",
-                        file_url: S3_URL + "/" + file.Key
+                        file_url: S3_URL + "/" + file.Key,
+                        actualKey: file.Key
                     });
             })
             res.json({ success: true, files: contents })
         }
     });
+}
+
+exports.readFile = (req, res) => {
+    let fileKey = req.body.key;
+    console.log('fileKey', fileKey)
+
+    const bucketParams = {
+        Bucket: "273-grubhub-images",
+        Key: fileKey
+    }
+
+    s3.getObject(bucketParams, function (err, data) {
+
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(data.Body.toString());
+        }
+    
+    });
+
 }
 
 exports.getProjects = (req, res) => {
