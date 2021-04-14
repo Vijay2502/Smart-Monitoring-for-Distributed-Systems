@@ -28,7 +28,6 @@ header.navbar {
 nav {
     // flex: 0.75;
     background: $primaryColor;
-    padding: 20px;
 
     grid-column: 1 / 2;
     grid-row: 2 / 4;
@@ -85,3 +84,21 @@ footer {
         flex-direction: column;
     }
 }
+
+.pro-sidebar.app-sidebar .pro-menu {
+    .pro-menu-item {
+        font-weight: 600;
+        font-size: 1.1rem;
+        &.selected {
+            background: $fourthColor;
+            color: $primaryColor;
+            .pro-item-content a {
+                color: $primaryColor;
+            }
+        }
+    }
+}
+
+
+
+@import '~react-pro-sidebar/dist/scss/styles.scss';
