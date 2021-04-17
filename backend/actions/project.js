@@ -75,3 +75,9 @@ exports.samplePostRoute = (req, res) => {
 
     res.status(200).send("DONESH!");
 }
+
+exports.postPythonData = (req, res) => {
+    console.log(req.body);
+    console.log("called");
+    res.status(200).send("DONE");
+}
