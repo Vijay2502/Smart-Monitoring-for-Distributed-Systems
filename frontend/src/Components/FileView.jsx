@@ -38,7 +38,7 @@ class FileView extends Component {
 
                     <Row className="">
                         <Col>
-                            <p>{JSON.stringify(this.state.content)}</p>
+                            <div>{typeof this.state.content === "string" ? this.state.content.split("\n").map(curr => <p>{curr}</p>) : JSON.stringify(this.state.content)}</div>
                         </Col>
                     </Row>
 

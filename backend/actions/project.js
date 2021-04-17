@@ -45,7 +45,6 @@ exports.getFiles = (req, res) => {
 
 exports.readFile = (req, res) => {
     let fileKey = req.body.key;
-    console.log('fileKey', fileKey)
 
     const bucketParams = {
         Bucket: "273-grubhub-images",

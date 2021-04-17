@@ -42,6 +42,7 @@ class Files extends Component {
                                         <th>Date Created</th>
                                         <th>Size</th>
                                         <th>View File</th>
+                                        <th>Download</th>
                                     </tr>
                                 </thead>}
                                 <tbody>
@@ -54,7 +55,7 @@ class Files extends Component {
                                                 <td>{`${date.toLocaleDateString()}  ${date.toLocaleTimeString()}`}</td>
                                                 <td>{file.size}</td>
                                                 <td><NavLink to={{ pathname: `/fileView`, state: { key: file.actualKey } }}>View Details</NavLink></td>
-
+                                                <td><a href={file.file_url.replaceAll("+", "%2B")} target="_blank" rel="noreferrer">Download</a></td>
                                             </tr>
                                         })
                                     }
