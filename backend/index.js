@@ -5,7 +5,6 @@ var cors = require('cors');
 require('dotenv').config();
 
 const { PORT, APP_URL } = process.env;
-console.log(PORT);
 
 //use cors to allow cross origin resource sharing
 app.use(cors({ origin: APP_URL, credentials: true }));

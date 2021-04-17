@@ -1,3 +1,41 @@
+var mongo = require("mongodb");
+let mongoose = require("mongoose");
+const App = require("../models/AppSchema");
+
+const { MONGO_URL } = process.env;
+
+// Connection URL
+const url = MONGO_URL;
+
+mongoose.set("useCreateIndex", true);
+mongoose.set("useUnifiedTopology", true); //issue with a depricated- found it
+// mongoose.set("poolSize", 10);
+mongoose
+  .connect(url, { useNewUrlParser: true, poolSize: 10 })
+  .then(() => console.log("Connected Successfully to MongoDB"))
+  .catch(err => console.error(err));
+
+let AppData="";
+mongo.connect(
+  url,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  },
+  (err, client) => {
+    if (err) {
+      console.error(err);
+      return;
+    } else {
+      console.log("Connected to mongodb");
+      const db = client.db("application-data");
+      AppData = db.collection("app");
+    }
+  }
+);
+
+const db = mongoose.connection;
+
 var K8s = require('k8s')
 
 var kubectl = K8s.kubectl({
