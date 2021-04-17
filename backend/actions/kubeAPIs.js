@@ -141,10 +141,16 @@ exports.getSystemUsage = async (req, res) => {
 
         const results = await App.insertMany(mongoData);
 
-        res.send({ header, table });
+        if (res)
+            res.send({ header, table });
+        else
+            console.log("Added to db");
 
     } catch (error) {
-        res.status(500).send(error);
+        if (res)
+            res.status(500).send(error);
+        else
+            console.log(error);
     }
 }
 
