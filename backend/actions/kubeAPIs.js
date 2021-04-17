@@ -11,27 +11,27 @@ mongoose.set("useCreateIndex", true);
 mongoose.set("useUnifiedTopology", true); //issue with a depricated- found it
 // mongoose.set("poolSize", 10);
 mongoose
-  .connect(url, { useNewUrlParser: true, poolSize: 10 })
-  .then(() => console.log("Connected Successfully to MongoDB"))
-  .catch(err => console.error(err));
+    .connect(url, { useNewUrlParser: true, poolSize: 10 })
+    .then(() => console.log("Connected Successfully to MongoDB"))
+    .catch(err => console.error(err));
 
-let AppData="";
+let AppData = "";
 mongo.connect(
-  url,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  },
-  (err, client) => {
-    if (err) {
-      console.error(err);
-      return;
-    } else {
-      console.log("Connected to mongodb");
-      const db = client.db("application-data");
-      AppData = db.collection("app");
+    url,
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    },
+    (err, client) => {
+        if (err) {
+            console.error(err);
+            return;
+        } else {
+            console.log("Connected to mongodb");
+            const db = client.db("application-data");
+            AppData = db.collection("app");
+        }
     }
-  }
 );
 
 const db = mongoose.connection;
@@ -66,7 +66,7 @@ exports.getNamespaces = async (req, res) => {
         let [header, ...table] = resolveTable(data);
 
         table.pop();
-        res.send({header, table});
+        res.send({ header, table });
 
     } catch (error) {
         console.log('error', error)
@@ -83,7 +83,7 @@ exports.getDeployments = async (req, res) => {
         let [header, ...table] = resolveTable(data);
         table.pop();
 
-        res.send({header, table});
+        res.send({ header, table });
 
     } catch (error) {
         res.status(500).send(error);
@@ -99,7 +99,7 @@ exports.getPods = async (req, res) => {
         let [header, ...table] = resolveTable(data2);
         table.pop();
 
-        res.send({header, table});
+        res.send({ header, table });
 
     } catch (error) {
         res.status(500).send(error);
@@ -110,10 +110,10 @@ exports.getServices = async (req, res) => {
     try {
         const data = await kubectl.command('get services -n kube-system');
 
-        let [header, ...table] = resolveTable(data);  
-        table.pop();      
+        let [header, ...table] = resolveTable(data);
+        table.pop();
 
-        res.send({header, table});
+        res.send({ header, table });
 
     } catch (error) {
         res.status(500).send(error);
@@ -125,10 +125,23 @@ exports.getSystemUsage = async (req, res) => {
     try {
         const data = await kubectl.command('top node');
 
-        let [header, ...table] = resolveTable(data);  
-        table.pop();      
+        let [header, ...table] = resolveTable(data);
+        table.pop();
 
-        res.send({header, table});
+        let mongoData = [];
+
+        for ([clusterName, cpu, cpu_usage, memory, memPerc] of table) {
+            mongoData.push({
+                pod_name: clusterName,
+                cpu_usage: +cpu_usage.split("%")[0],
+                mem_usage: parseInt(memory.match(/\d/g).join(''), 10),
+                mem_percentage: parseInt(memPerc.match(/\d/g).join(''), 10)
+            })
+        }
+
+        const results = await App.insertMany(mongoData);
+
+        res.send({ header, table });
 
     } catch (error) {
         res.status(500).send(error);

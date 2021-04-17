@@ -15,6 +15,11 @@ const AppSchema = new Schema(
       type: Number,
       required: true
     },
+    mem_percentage: {
+      type: Number,
+      required: true
+    },
+    date: { type: Date, default: Date.now }
 },
   { collection: "app" }
 );
