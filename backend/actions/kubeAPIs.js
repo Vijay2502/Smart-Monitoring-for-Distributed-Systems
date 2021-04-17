@@ -23,21 +23,12 @@ const dateDiffInDays = (a) => {
 
 exports.getNamespaces = async (req, res) => {
     try {
-        const { items } = await kubectl.command('get namespaces --output=json')// 1st command
+        const data = await kubectl.command('get namespaces')// 1st command
 
-        const data = items.reduce((a, b) => {
-            let curr = {
-                name: b["metadata"]["name"],
-                status: b["status"]["phase"],
-                age: `${dateDiffInDays(b["metadata"]["creationTimestamp"])} days`
-            };
+        let [header, ...table] = resolveTable(data);
 
-            a.push(curr);
-            return a;
-        }, [])
-
-
-        res.send(data);
+        table.pop();
+        res.send({header, table});
 
     } catch (error) {
         console.log('error', error)
@@ -49,25 +40,12 @@ exports.getNamespaces = async (req, res) => {
 exports.getDeployments = async (req, res) => {
 
     try {
-        const { items } = await kubectl.command('get deployments --all-namespaces --output=json');
+        const data = await kubectl.command('get deployments --all-namespaces');
 
-        const data = items.reduce((a, b) => {
-            let curr = {
-                name: b["metadata"]["name"],
-                available: b["status"]["availableReplicas"],
-                ready: b["status"]["readyReplicas"],
-                replicas: b["status"]["replicas"],
-                age: `${dateDiffInDays(b["metadata"]["creationTimestamp"])} days`
-            };
+        let [header, ...table] = resolveTable(data);
+        table.pop();
 
-            if (!a[b["metadata"]["namespace"]]) a[b["metadata"]["namespace"]] = [];
-
-            a[b["metadata"]["namespace"]].push(curr);
-            return a;
-        }, {})
-
-
-        res.send(data);
+        res.send({header, table});
 
     } catch (error) {
         res.status(500).send(error);
@@ -78,25 +56,12 @@ exports.getDeployments = async (req, res) => {
 exports.getPods = async (req, res) => {
 
     try {
-        const { items } = await kubectl.command('get pods -n kube-system --output=json');
+        const data2 = await kubectl.command('get pods --all-namespaces');
 
-        const data = items.reduce((a, b) => {
-            let curr = {
-                name: b["metadata"]["name"],
-                podIp: b["status"]["podIP"],
-                hostIp: b["status"]["hostIP"],
-                phase: b["status"]["phase"],
-                age: `${dateDiffInDays(b["metadata"]["creationTimestamp"])} days`
-            };
+        let [header, ...table] = resolveTable(data2);
+        table.pop();
 
-            if (!a[b["metadata"]["namespace"]]) a[b["metadata"]["namespace"]] = [];
-
-            a[b["metadata"]["namespace"]].push(curr);
-            return a;
-        }, {})
-
-
-        res.send(data);
+        res.send({header, table});
 
     } catch (error) {
         res.status(500).send(error);
@@ -105,26 +70,38 @@ exports.getPods = async (req, res) => {
 
 exports.getServices = async (req, res) => {
     try {
-        const { items } = await kubectl.command('get services -n kube-system --output=json')
+        const data = await kubectl.command('get services -n kube-system');
 
-        const data = items.reduce((a, b) => {
-            let curr = {
-                name: b["metadata"]["name"],
-                externalTrafficPolicy: b["spec"]["externalTrafficPolicy"],
-                clusterIp: b["spec"]["clusterIP"],
-                type: b["spec"]["type"],
-                age: `${dateDiffInDays(b["metadata"]["creationTimestamp"])} days`
-            };
+        let [header, ...table] = resolveTable(data);  
+        table.pop();      
 
-            if (!a[b["metadata"]["namespace"]]) a[b["metadata"]["namespace"]] = [];
-
-            a[b["metadata"]["namespace"]].push(curr);
-            return a;
-        }, {})
-
-        res.send(data);
+        res.send({header, table});
 
     } catch (error) {
         res.status(500).send(error);
     }
+}
+
+
+exports.getSystemUsage = async (req, res) => {
+    try {
+        const data = await kubectl.command('top node');
+
+        let [header, ...table] = resolveTable(data);  
+        table.pop();      
+
+        res.send({header, table});
+
+    } catch (error) {
+        res.status(500).send(error);
+    }
+}
+
+
+let resolveTable = data => {
+    data = data.split("\n");
+
+    data = data.map(element => element.split(" ").filter(curr => curr !== ""));
+
+    return data;
 }

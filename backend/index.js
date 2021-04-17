@@ -42,6 +42,7 @@ app.get('/getNamespaces', kube.getNamespaces);
 app.get('/getPods', kube.getPods);
 app.get('/getDeployments', kube.getDeployments);
 app.get('/getServices', kube.getServices);
+app.get('/getSystemUsage', kube.getSystemUsage);
 
 
 
