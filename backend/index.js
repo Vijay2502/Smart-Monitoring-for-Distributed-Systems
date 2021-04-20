@@ -39,10 +39,10 @@ app.post('/postPythonData', project.postPythonData);
 const kube = require('./actions/kubeAPIs');
 
 app.get('/getNamespaces', kube.getNamespaces);
-app.get('/getPods', kube.getPods);
-app.get('/getDeployments', kube.getDeployments);
-app.get('/getServices', kube.getServices);
-app.get('/getSystemUsage', kube.getSystemUsage);
+app.get('/getPods/:project', kube.getPods);
+app.get('/getDeployments/:project', kube.getDeployments);
+app.get('/getServices/:project', kube.getServices);
+app.get('/getSystemUsage/:project', kube.getSystemUsage);
 
 
 // Cron Jobs

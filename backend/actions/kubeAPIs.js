@@ -78,7 +78,8 @@ exports.getNamespaces = async (req, res) => {
 exports.getDeployments = async (req, res) => {
 
     try {
-        const data = await kubectl.command('get deployments --all-namespaces');
+        const project = req.params.project;
+        const data = await kubectl.command(`get deployments ${project ? `-n ${project}` : `--all-namespaces`}`);
 
         let [header, ...table] = resolveTable(data);
         table.pop();
@@ -86,7 +87,9 @@ exports.getDeployments = async (req, res) => {
         res.send({ header, table });
 
     } catch (error) {
-        res.status(500).send(error);
+        console.log('error', error)
+        if (error.includes("No resources found")) res.send({ header: [], table: [] });
+        else res.status(500).send(error);
     }
 
 }
@@ -94,7 +97,8 @@ exports.getDeployments = async (req, res) => {
 exports.getPods = async (req, res) => {
 
     try {
-        const data2 = await kubectl.command('get pods --all-namespaces');
+        const project = req.params.project;
+        const data2 = await kubectl.command(`get pods ${project ? `-n ${project}` : `--all-namespaces`}`);
 
         let [header, ...table] = resolveTable(data2);
         table.pop();
@@ -102,13 +106,16 @@ exports.getPods = async (req, res) => {
         res.send({ header, table });
 
     } catch (error) {
-        res.status(500).send(error);
+        console.log('error', error)
+        if (error.includes("No resources found")) res.send({ header: [], table: [] });
+        else res.status(500).send(error);
     }
 }
 
 exports.getServices = async (req, res) => {
     try {
-        const data = await kubectl.command('get services -n kube-system');
+        const project = req.params.project;
+        const data = await kubectl.command(`get services ${project ? `-n ${project}` : `--all-namespaces`}`);
 
         let [header, ...table] = resolveTable(data);
         table.pop();
@@ -116,7 +123,9 @@ exports.getServices = async (req, res) => {
         res.send({ header, table });
 
     } catch (error) {
-        res.status(500).send(error);
+        console.log('error', error)
+        if (error.includes("No resources found")) res.send({ header: [], table: [] });
+        else res.status(500).send(error);
     }
 }
 
@@ -130,16 +139,16 @@ exports.getSystemUsage = async (req, res) => {
 
         let mongoData = [];
 
-        for ([clusterName, cpu, cpu_usage, memory, memPerc] of table) {
-            mongoData.push({
-                pod_name: clusterName,
-                cpu_usage: +cpu_usage.split("%")[0],
-                mem_usage: parseInt(memory.match(/\d/g).join(''), 10),
-                mem_percentage: parseInt(memPerc.match(/\d/g).join(''), 10)
-            })
-        }
+        // for ([clusterName, cpu, cpu_usage, memory, memPerc] of table) {
+        //     mongoData.push({
+        //         pod_name: clusterName,
+        //         cpu_usage: +cpu_usage.split("%")[0],
+        //         mem_usage: parseInt(memory.match(/\d/g).join(''), 10),
+        //         mem_percentage: parseInt(memPerc.match(/\d/g).join(''), 10)
+        //     })
+        // }
 
-        const results = await App.insertMany(mongoData);
+        // const results = await App.insertMany(mongoData);
 
         if (res)
             res.send({ header, table });
@@ -149,8 +158,8 @@ exports.getSystemUsage = async (req, res) => {
     } catch (error) {
         if (res)
             res.status(500).send(error);
-        else
-            console.log(error);
+
+        console.log(error);
     }
 }
 

@@ -10,7 +10,18 @@ import { RandomColor } from '../RandomColor';
 
 class ProjectView extends Component {
     state = {
-        projectList: [],
+        deployments: {
+            header: [],
+            table: []
+        },
+        pods: {
+            header: [],
+            table: []
+        },
+        services: {
+            header: [],
+            table: []
+        },
         chartDep: [],
         chartPods: [],
         chartServ: []
@@ -19,10 +30,16 @@ class ProjectView extends Component {
     componentDidMount = async () => {
         const { name } = this.props.match?.params;
         try {
-            const result = await Axios.get(`${process.env.REACT_APP_BACKEND}/getProjects`);
+            const deployments = await Axios.get(`${process.env.REACT_APP_BACKEND}/getDeployments/${name}`);
+            const pods = await Axios.get(`${process.env.REACT_APP_BACKEND}/getPods/${name}`);
+            const services = await Axios.get(`${process.env.REACT_APP_BACKEND}/getServices/${name}`);
 
             this.setState((oldState) => {
-                return { projectList: result.data?.projects.find(a => a.name === name) };
+                return {
+                    deployments: deployments.data,
+                    pods: pods.data,
+                    services: services.data,
+                };
             }, () => this.generateChartData());
 
         } catch (error) {
@@ -31,14 +48,14 @@ class ProjectView extends Component {
     }
 
     generateChartData = () => {
-        const { deployments, pods, services } = this.state.projectList;
+        const { deployments, pods, services } = this.state;
 
         this.setState((oldState) => {
             return {
                 ...oldState,
-                chartDep: deployments.reduce((a, dep) => { a.push({ name: dep.name, y: 1 }); return a; }, []),
-                chartPods: pods.reduce((a, dep) => { a.push({ name: dep.name, y: 1 }); return a; }, []),
-                chartServ: services.reduce((a, dep) => { a.push({ name: dep.name, y: 1 }); return a; }, [])
+                chartDep: deployments["table"].reduce((a, dep) => { a.push({ name: dep[0], y: 1 }); return a; }, []),
+                chartPods: pods["table"].reduce((a, dep) => { a.push({ name: dep[0], y: 1 }); return a; }, []),
+                chartServ: services["table"].reduce((a, dep) => { a.push({ name: dep[0], y: 1 }); return a; }, [])
             }
         })
 
@@ -74,10 +91,7 @@ class ProjectView extends Component {
 
     render() {
         const { name } = this.props.match?.params;
-        const { projectList, chartDep, chartPods, chartServ } = this.state;
-
-        if (!Array.isArray(projectList))
-            var { deployments, pods, services } = projectList;
+        const { deployments, pods, services, chartDep, chartPods, chartServ } = this.state;
 
         return (
             <Fragment>
@@ -92,28 +106,30 @@ class ProjectView extends Component {
                         <h4 className="mb-3">Deployments</h4>
                         <Row>
                             <Col sm={7}>
-                                <Table bordered striped responsive variant="dark">
-                                    <thead>
-                                        <tr>
+                                {
+                                    deployments["header"].length ? <Table bordered striped responsive variant="dark">
+                                        <thead>
+                                            <tr>
+                                                {
+                                                    deployments["header"].map((curr, i) => <th key={i}>{curr}</th>)
+                                                }
+                                            </tr>
+                                        </thead>
+                                        <tbody>
                                             {
-                                                ["Name", "Available", "Ready", "Age"].map((curr, i) => <th key={i}>{curr}</th>)
+                                                deployments["table"].length > 0 && deployments["table"].map((curr, i) => {
+                                                    return <tr key={i}>
+                                                        {
+                                                            curr.map((d, i) => <td key={i}>{d}</td>)
+                                                        }
+                                                    </tr>;
+                                                })
                                             }
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            deployments?.length > 0 && deployments.map((curr, i) => {
-                                                return <tr key={i}>
-                                                    <td>{curr.name}</td>
-                                                    <td>{curr.available}</td>
-                                                    <td>{curr.ready}</td>
-                                                    <td>{curr.age}</td>
-                                                </tr>;
-                                            })
-                                        }
 
-                                    </tbody>
-                                </Table>
+                                        </tbody>
+                                    </Table>
+                                        : "No Deployments"
+                                }
                             </Col>
                             <Col sm={5}>
                                 {
@@ -141,29 +157,30 @@ class ProjectView extends Component {
                                 }
                             </Col>
                             <Col sm={7}>
-                                <Table bordered striped responsive variant="dark">
-                                    <thead>
-                                        <tr>
+                                {
+                                    pods["header"].length ? <Table bordered striped responsive variant="dark">
+                                        <thead>
+                                            <tr>
+                                                {
+                                                    pods["header"].map((curr, i) => <th key={i}>{curr}</th>)
+                                                }
+                                            </tr>
+                                        </thead>
+                                        <tbody>
                                             {
-                                                ["Name", "Restarts", "Status", "Ready", "Age"].map((curr, i) => <th key={i}>{curr}</th>)
+                                                pods["table"].length > 0 && pods["table"].map((curr, i) => {
+                                                    return <tr key={i}>
+                                                        {
+                                                            curr.map((d, i) => <td key={i}>{d}</td>)
+                                                        }
+                                                    </tr>;
+                                                })
                                             }
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            pods?.length > 0 && pods.map((curr, i) => {
-                                                return <tr key={i}>
-                                                    <td>{curr.name}</td>
-                                                    <td>{curr.restarts}</td>
-                                                    <td>{curr.status}</td>
-                                                    <td>{curr.ready}</td>
-                                                    <td>{curr.age}</td>
-                                                </tr>;
-                                            })
-                                        }
 
-                                    </tbody>
-                                </Table>
+                                        </tbody>
+                                    </Table>
+                                        : "No Pods Deployed"
+                                }
                             </Col>
                         </Row>
 
@@ -174,29 +191,30 @@ class ProjectView extends Component {
                         <h4 className="mb-3">Services</h4>
                         <Row>
                             <Col sm={7}>
-                                <Table bordered striped responsive variant="dark">
-                                    <thead>
-                                        <tr>
+                                {
+                                    services["header"].length ? <Table bordered striped responsive variant="dark">
+                                        <thead>
+                                            <tr>
+                                                {
+                                                    services["header"].map((curr, i) => <th key={i}>{curr}</th>)
+                                                }
+                                            </tr>
+                                        </thead>
+                                        <tbody>
                                             {
-                                                ["Name", "Type", "Cluster IP", "External IP", "Ports", "Age"].map((curr, i) => <th key={i}>{curr}</th>)
+                                                services["table"].length > 0 && services["table"].map((curr, i) => {
+                                                    return <tr key={i}>
+                                                        {
+                                                            curr.map((d, i) => <td key={i}>{d}</td>)
+                                                        }
+                                                    </tr>;
+                                                })
                                             }
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            services?.length > 0 && services.map((curr, i) => {
-                                                return <tr key={i}>
-                                                    <td>{curr.name}</td>
-                                                    <td>{curr.type}</td>
-                                                    <td>{curr["cluster-ip"]}</td>
-                                                    <td>{curr["external-ip"]}</td>
-                                                    <td>{curr.ports}</td>
-                                                    <td>{curr.age}</td>
-                                                </tr>;
-                                            })
-                                        }
-                                    </tbody>
-                                </Table>
+
+                                        </tbody>
+                                    </Table>
+                                        : "No Services Deployed"
+                                }
                             </Col>
                             <Col sm={5}>
                                 {

@@ -14,11 +14,15 @@ class ProjectStatus extends Component {
 
     componentDidMount = async () => {
         try {
-            const result = await Axios.get(`${process.env.REACT_APP_BACKEND}/getProjects`);
+            // const result = await Axios.get(`${process.env.REACT_APP_BACKEND}/getProjects`);
+            // const result1 = await Axios.get(`${process.env.REACT_APP_BACKEND}/sample`);
+            const result2 = await Axios.get(`${process.env.REACT_APP_BACKEND}/getNamespaces`);
+            console.log('result2', result2)
+            // console.log('result1', result1)
 
-            this.generateStats(result.data?.projects);
+            this.generateStats(result2.data?.projects);
             this.setState((oldState) => {
-                return { projectList: result.data?.projects };
+                return { projectList: result2.data?.projects };
             })
 
         } catch (error) {

@@ -12,10 +12,10 @@ class Projects extends Component {
 
     componentDidMount = async () => {
         try {
-            const result = await Axios.get(`${process.env.REACT_APP_BACKEND}/getProjects`);
+            const result = await Axios.get(`${process.env.REACT_APP_BACKEND}/getNamespaces`);
 
             this.setState((oldState) => {
-                return { projectList: result.data?.projects };
+                return { projectList: result.data?.table };
             })
 
         } catch (error) {
@@ -50,10 +50,10 @@ class Projects extends Component {
                                 projectList.length > 0 && projectList.map((project, i) => {
                                     return <tr key={project.name}>
                                         <td>{i + 1}</td>
-                                        <td>{project.name}</td>
-                                        <td>{project.status}</td>
-                                        <td>{project.age}</td>
-                                        <td><NavLink to={`/projectView/${project.name}`}>View Details</NavLink></td>
+                                        <td>{project[0]}</td>
+                                        <td>{project[1]}</td>
+                                        <td>{project[2]}</td>
+                                        <td><NavLink to={`/projectView/${project[0]}`}>View Details</NavLink></td>
                                     </tr>
                                 })
                             }
