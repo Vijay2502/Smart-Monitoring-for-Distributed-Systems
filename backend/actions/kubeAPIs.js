@@ -139,16 +139,16 @@ exports.getSystemUsage = async (req, res) => {
 
         let mongoData = [];
 
-        // for ([clusterName, cpu, cpu_usage, memory, memPerc] of table) {
-        //     mongoData.push({
-        //         pod_name: clusterName,
-        //         cpu_usage: +cpu_usage.split("%")[0],
-        //         mem_usage: parseInt(memory.match(/\d/g).join(''), 10),
-        //         mem_percentage: parseInt(memPerc.match(/\d/g).join(''), 10)
-        //     })
-        // }
+        for ([clusterName, cpu, cpu_usage, memory, memPerc] of table) {
+            mongoData.push({
+                pod_name: clusterName,
+                cpu_usage: +cpu_usage.split("%")[0],
+                mem_usage: parseInt(memory.match(/\d/g).join(''), 10),
+                mem_percentage: parseInt(memPerc.match(/\d/g).join(''), 10)
+            })
+        }
 
-        // const results = await App.insertMany(mongoData);
+        const results = await App.insertMany(mongoData);
 
         if (res)
             res.send({ header, table });
