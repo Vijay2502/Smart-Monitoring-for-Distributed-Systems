@@ -79,7 +79,7 @@ exports.getDeployments = async (req, res) => {
 
     try {
         const project = req.params.project;
-        const data = await kubectl.command(`get deployments ${project ? `-n ${project}` : `--all-namespaces`}`);
+        const data = await kubectl.command(`get deployments ${project !== "all" ? `-n ${project}` : `--all-namespaces`}`);
 
         let [header, ...table] = resolveTable(data);
         table.pop();
@@ -98,7 +98,7 @@ exports.getPods = async (req, res) => {
 
     try {
         const project = req.params.project;
-        const data2 = await kubectl.command(`get pods ${project ? `-n ${project}` : `--all-namespaces`}`);
+        const data2 = await kubectl.command(`get pods ${project !== "all" ? `-n ${project}` : `--all-namespaces`}`);
 
         let [header, ...table] = resolveTable(data2);
         table.pop();
@@ -115,7 +115,7 @@ exports.getPods = async (req, res) => {
 exports.getServices = async (req, res) => {
     try {
         const project = req.params.project;
-        const data = await kubectl.command(`get services ${project ? `-n ${project}` : `--all-namespaces`}`);
+        const data = await kubectl.command(`get services ${project !== "all" ? `-n ${project}` : `--all-namespaces`}`);
 
         let [header, ...table] = resolveTable(data);
         table.pop();
