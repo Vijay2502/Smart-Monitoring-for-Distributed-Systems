@@ -3,6 +3,7 @@ const AWS = require('aws-sdk');
 var multer = require('multer');
 var multerS3 = require('multer-s3');
 var sampleJson = require('../sample.json');
+var pythonDict={};
 
 const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, S3_URL } = process.env;
 
@@ -77,7 +78,13 @@ exports.samplePostRoute = (req, res) => {
 }
 
 exports.postPythonData = (req, res) => {
-    console.log(req.body);
-    console.log("called");
+    //console.log(req.body);
+    pythonDict=req.body;
+    console.log(pythonDict);
     res.status(200).send("DONE");
+}
+
+exports.getPythonData = (req, res) => {
+
+    res.json({pythonDict: pythonDict});
 }

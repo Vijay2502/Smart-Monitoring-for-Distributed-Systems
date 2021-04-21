@@ -32,6 +32,7 @@ app.post('/readFile', project.readFile);
 app.get('/getProjects', project.getProjects);
 app.post('/postSample', project.samplePostRoute);
 app.post('/postPythonData', project.postPythonData);
+app.get('/getPythonData', project.getPythonData);
 
 
 // Kube APIs
