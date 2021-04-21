@@ -7,22 +7,24 @@ import { CanvasJSChart } from "../canvasjs.react/canvasjs.react";
 class ClusterData extends Component {
     state = {
         content:{},
-        b:[]
+        memPercentage:{}
     }
     componentDidMount = async () => {
 
+        //Cpu Usage
         const result = await Axios.get(`${process.env.REACT_APP_BACKEND}/getPythonData`);
         //const result = await Axios.get(`http://localhost:3001/getPythonData`);
-        console.log(result.data.pythonDict);
+
+        //Memory percentage
+        const result1 = await Axios.get(`${process.env.REACT_APP_BACKEND}/getPythonMemPercentage`);
+        //const result1 = await Axios.get(`http://localhost:3001/getPythonMemPercentage`);
+        //console.log("mem usage",result1.data.pythonDict2);
+        
         this.setState({
-            content: result.data.pythonDict
+            content: result.data.pythonDict,
+            memPercentage: result1.data.pythonDict2
         })
-
-        Object.keys(this.state.content).map((key, index) => ( 
-            console.log(this.state.content[key])
-
-            ));
-
+ 
     }
     render() {
         return (
@@ -40,7 +42,10 @@ class ClusterData extends Component {
                         Object.keys(this.state.content).map((key, index) => {
                             var obs=[];
                             var fore=[];
+                            var obsMem=[];
+                            var foreMem=[];
                             
+                            //plot observed cpu
                             var keys1 = Object.keys(JSON.parse(this.state.content[key].observed));
                             for (var i = 0; i < keys1.length; i++) {
                                  var keycurr = keys1[i];
@@ -54,7 +59,8 @@ class ClusterData extends Component {
                              }
                             console.log(obs);
                             console.log(obs.length);
-
+                            
+                            //plot forecasted cpu
                             var keys2 = Object.keys(JSON.parse(this.state.content[key].forecast));
                             for (var j = 0; j < keys2.length; j++) {
                                  var keycurr2 = keys2[j];
@@ -69,16 +75,80 @@ class ClusterData extends Component {
                              console.log(fore);
                              console.log(fore.length);
 
-                             var options = {
+                             //plot observed mem percentage
+                            var keys3 = Object.keys(JSON.parse(this.state.memPercentage[key].observed));
+                            for (var k = 0; k < keys3.length; k++) {
+                                 var keycurr3 = keys3[k];
+                                 if(!obsMem.length){
+                                    obsMem = [
+                                         { x: new Date(parseInt(keycurr3)), y: (JSON.parse(this.state.memPercentage[key].observed))[keycurr3]}
+                                       ];
+                                 }else{
+                                    obsMem.push({ x: new Date(parseInt(keycurr3)), y: (JSON.parse(this.state.memPercentage[key].observed))[keycurr3]});
+                                 }
+                             }
+
+                            //plot forecasted mem percentage
+                            var keys4 = Object.keys(JSON.parse(this.state.memPercentage[key].forecast));
+                            for (var l = 0; l < keys4.length; l++) {
+                                 var keycurr4 = keys4[l];
+                                 if(!foreMem.length){
+                                    foreMem = [
+                                         { x: new Date(parseInt(keycurr4)), y: (JSON.parse(this.state.memPercentage[key].forecast))[keycurr4]}
+                                       ];
+                                 }else{
+                                    foreMem.push({ x: new Date(parseInt(keycurr4)), y: (JSON.parse(this.state.memPercentage[key].forecast))[keycurr4]});
+                                 }
+                             }
+
+                            var options2 = {
+                                animationEnabled: true,
+                                title: {
+                                  text: "Cluster name: "+this.state.memPercentage[key].cluster_name,
+                                  fontFamily:"Segoe UI"
+                                },axisX: {
+                                    valueFormatString: "DD MMM,YY HH:MM"
+                                },
+                                axisY: {
+                                    title: "Memory Used %",
+                                    fontSize: 30
+                                    //suffix: " %"
+                                },
+                                legend:{
+                                    cursor: "pointer",
+                                    fontSize: 16
+                                },
+                                toolTip:{
+                                    shared: true
+                                },
+                                data: [
+                                  {
+                                    name: "Observed",
+                                    type: "spline",
+                                    yValueFormatString: "# '%'",
+                                    showInLegend: true,
+                                    dataPoints: obsMem
+                                  },
+                                  {
+                                    name: "Forecasted",
+                                    type: "spline",
+                                    yValueFormatString: "# '%'",
+                                    showInLegend: true,
+                                    dataPoints: foreMem
+                                }
+                                ]
+                              };
+
+                              var options = {
                                 animationEnabled: true,
                                 title: {
                                   text: "Cluster name: "+this.state.content[key].cluster_name,
                                   fontFamily:"Segoe UI"
                                 },axisX: {
-                                    valueFormatString: "DD MMM,YY"
+                                    valueFormatString: "DD MMM,YY HH:MM"
                                 },
                                 axisY: {
-                                    title: "CPU usage"
+                                    title: "CPU Used %"
                                     //suffix: " °C"
                                 },
                                 legend:{
@@ -90,16 +160,16 @@ class ClusterData extends Component {
                                 },
                                 data: [
                                   {
-                                    name: "Observed values",
+                                    name: "Observed",
                                     type: "spline",
-                                    //yValueFormatString: "#0.## °C",
+                                    yValueFormatString: "# '%'",
                                     showInLegend: true,
                                     dataPoints: obs
                                   },
                                   {
-                                    name: "Forecasted values",
+                                    name: "Forecasted",
                                     type: "spline",
-                                    //yValueFormatString: "#0.## °C",
+                                    yValueFormatString: "# '%'",
                                     showInLegend: true,
                                     dataPoints: fore
                                 }
@@ -108,7 +178,8 @@ class ClusterData extends Component {
 
                             return( 
                             
-                            <CanvasJSChart options = {options}/>
+                                <Fragment><CanvasJSChart options = {options}/><br/>
+                               <CanvasJSChart options = {options2}/> <br/></Fragment>
                             
                             )
                         })

@@ -4,6 +4,7 @@ var multer = require('multer');
 var multerS3 = require('multer-s3');
 var sampleJson = require('../sample.json');
 var pythonDict={};
+var pythonDict2={};
 
 const { AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, S3_URL } = process.env;
 
@@ -87,4 +88,16 @@ exports.postPythonData = (req, res) => {
 exports.getPythonData = (req, res) => {
 
     res.json({pythonDict: pythonDict});
+}
+
+exports.postPythonMemPercentage = (req, res) => {
+    //console.log(req.body);
+    pythonDict2=req.body;
+    console.log(pythonDict2);
+    res.status(200).send("DONE");
+}
+
+exports.getPythonMemPercentage = (req, res) => {
+
+    res.json({pythonDict2: pythonDict2});
 }

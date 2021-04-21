@@ -3,7 +3,9 @@ var app = express();
 var bodyParser = require('body-parser');
 var cors = require('cors');
 require('dotenv').config();
-
+var bodyParser = require('body-parser');
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 const { PORT, APP_URL } = process.env;
 
 //use cors to allow cross origin resource sharing
@@ -33,6 +35,8 @@ app.get('/getProjects', project.getProjects);
 app.post('/postSample', project.samplePostRoute);
 app.post('/postPythonData', project.postPythonData);
 app.get('/getPythonData', project.getPythonData);
+app.post('/postPythonMemPercentage', project.postPythonMemPercentage);
+app.get('/getPythonMemPercentage', project.getPythonMemPercentage);
 
 
 // Kube APIs
