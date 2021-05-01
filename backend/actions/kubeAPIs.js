@@ -41,10 +41,8 @@ var K8s = require('k8s')
 var kubectl = K8s.kubectl({
     endpoint: process.env.KUBE_URL
     , version: '/api/v1',
-    strictSSL: false,
-    "auth": {
-        "token": process.env.KUBE_TOKEN
-    }
+    strictSSL: false
+    // kubeconfig: "/usr/src/backend/actions/config.yaml"
 });
 
 const dateDiffInDays = (a) => {
@@ -73,7 +71,6 @@ exports.getNamespaces = async (req, res) => {
 
     }
 }
-
 
 exports.getDeployments = async (req, res) => {
 
@@ -132,6 +129,8 @@ exports.getServices = async (req, res) => {
 
 exports.getSystemUsage = async (req, res) => {
     try {
+        console.log("started");
+        // const data = await kubectl.command('top node --use-protocol-buffers');
         const data = await kubectl.command('top node');
 
         let [header, ...table] = resolveTable(data);
@@ -142,13 +141,16 @@ exports.getSystemUsage = async (req, res) => {
         for ([clusterName, cpu, cpu_usage, memory, memPerc] of table) {
             mongoData.push({
                 pod_name: clusterName,
-                cpu_usage: +cpu_usage.split("%")[0],
-                mem_usage: parseInt(memory.match(/\d/g).join(''), 10),
-                mem_percentage: parseInt(memPerc.match(/\d/g).join(''), 10)
+                cpu_usage: cpu_usage.split("%").length && +cpu_usage.split("%")[0] || 0,
+                cpu: cpu && parseInt(cpu.match(/\d/g).join(''), 10) || 0,
+                mem_usage: memory && parseInt(memory.match(/\d/g).join(''), 10) || 0,
+                mem_percentage: memPerc && parseInt(memPerc.match(/\d/g).join(''), 10) || 0
             })
         }
 
-        const results = await App.insertMany(mongoData);
+        console.log(mongoData);
+
+        // const results = await App.insertMany(mongoData);
 
         if (res)
             res.send({ header, table });
@@ -159,8 +161,43 @@ exports.getSystemUsage = async (req, res) => {
         if (res)
             res.status(500).send(error);
 
-        console.log(error);
+        console.log("ERROR: ", error);
     }
+}
+
+exports.getPodSystemUsage = async (req, res) => {
+
+    try {
+        const data = await kubectl.command('top pod -n kube-system');
+        // const data = await kubectl.command('top pod -n kube-system --use-protocol-buffers');
+        
+        let [header, ...table] = resolveTable(data);
+        // table.pop();
+
+        console.log('data', table)
+        
+    } catch (error) {
+        if (res)
+            res.status(500).send(error);
+
+        console.log("ERROR: ", error);
+        
+    }
+
+}
+
+
+exports.sampleRoute = async (req, res) => {
+
+    try {
+        const results = await App.deleteMany({ "date": { $gt: new Date(2021, 03, 20) } });
+        
+        res.send("Success!");
+
+    } catch (error) {
+        res.status(500).send("Error");
+    }
+
 }
 
 

@@ -14,28 +14,55 @@ class ProjectStatus extends Component {
 
     componentDidMount = async () => {
         try {
-            const result2 = await Axios.get(`${process.env.REACT_APP_BACKEND}/getProjects`);
-            // const result1 = await Axios.get(`${process.env.REACT_APP_BACKEND}/sample`);
-            // const result2 = await Axios.get(`${process.env.REACT_APP_BACKEND}/getNamespaces`);
-            // const deployments = await Axios.get(`${process.env.REACT_APP_BACKEND}/getDeployments/all`);
-            // const pods = await Axios.get(`${process.env.REACT_APP_BACKEND}/getPods/all`);
-            // const services = await Axios.get(`${process.env.REACT_APP_BACKEND}/getServices/all`);
-            // console.log('result2', deployments)
-            // console.log('result1', result1)
+            const deployments = await Axios.get(`${process.env.REACT_APP_BACKEND}/getDeployments/all`);
+            const pods = await Axios.get(`${process.env.REACT_APP_BACKEND}/getPods/all`);
+            const services = await Axios.get(`${process.env.REACT_APP_BACKEND}/getServices/all`);
 
-            this.generateStats(result2.data?.projects);
-            this.setState((oldState) => {
-                return { projectList: result2.data?.projects };
-            })
-
+            this.generateStats(deployments.data, pods.data, services.data);
         } catch (error) {
             alert(error);
         }
     }
 
-    generateStats = (projects) => {
+    generateStats = (deployments, pods, services) => {
+        const depData = deployments.table;
+        const podData = pods.table;
+        const servData = services.table;
 
-        let stats = projects.map(a => [a["name"], a["deployments"]?.length || 0, a["pods"]?.length || 0, a["services"]?.length || 0])
+        let data = {};
+
+        for (let entry of depData) {
+            if (!data[entry[0]])
+                data[entry[0]] = {
+                    deployments: 1,
+                    pods: 0,
+                    services: 0
+                }
+            else
+                data[entry[0]]["deployments"] += 1;
+        }
+        for (let entry of podData) {
+            if (!data[entry[0]])
+                data[entry[0]] = {
+                    deployments: 0,
+                    pods: 1,
+                    services: 0
+                }
+            else
+                data[entry[0]]["pods"] += 1;
+        }
+        for (let entry of servData) {
+            if (!data[entry[0]])
+                data[entry[0]] = {
+                    deployments: 0,
+                    pods: 0,
+                    services: 1
+                }
+            else
+                data[entry[0]]["services"] += 1;
+        }
+
+        let stats = Object.entries(data).map(a => [a[0], a[1]["deployments"], a[1]["pods"], a[1]["services"]]);
 
         console.log(stats);
         this.setState((oldState) => {
