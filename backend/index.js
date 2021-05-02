@@ -37,6 +37,10 @@ app.post('/postPythonData', project.postPythonData);
 app.get('/getPythonData', project.getPythonData);
 app.post('/postPythonMemPercentage', project.postPythonMemPercentage);
 app.get('/getPythonMemPercentage', project.getPythonMemPercentage);
+app.post('/postApplicationCPU', project.postApplicationCPU);
+app.get('/getApplicationCPU', project.getApplicationCPU);
+app.post('/postApplicationMem', project.postApplicationMem);
+app.get('/getApplicationMem', project.getApplicationMem);
 
 
 // Kube APIs
