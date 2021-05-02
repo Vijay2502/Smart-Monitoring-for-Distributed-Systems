@@ -51,8 +51,9 @@ app.get('/getNamespaces', kube.getNamespaces);
 app.get('/getPods/:project', kube.getPods);
 app.get('/getDeployments/:project', kube.getDeployments);
 app.get('/getServices/:project', kube.getServices);
-app.get('/getSystemUsage/:project', kube.getSystemUsage);
+app.get('/getSystemUsage', kube.getSystemUsage);
 
+app.get('/sampleRoute', kube.sampleRoute);
 
 // Cron Jobs
 

@@ -11,6 +11,10 @@ const AppSchema = new Schema(
       type: Number,
       required: true
     },
+    cpu: {
+      type: Number,
+      required: true
+    },
     mem_usage: {
       type: Number,
       required: true
@@ -21,6 +25,6 @@ const AppSchema = new Schema(
     },
     date: { type: Date, default: Date.now }
 },
-  { collection: "app" }
+  { collection: "app2" }
 );
-module.exports = App = mongoose.model("App", AppSchema);
+module.exports = App = mongoose.model("App2", AppSchema);
