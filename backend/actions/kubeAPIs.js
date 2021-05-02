@@ -1,6 +1,7 @@
 var mongo = require("mongodb");
 let mongoose = require("mongoose");
 const App = require("../models/AppSchema");
+const SystemData = require("../models/SysdataSchema");
 
 const { MONGO_URL } = process.env;
 
@@ -148,9 +149,9 @@ exports.getSystemUsage = async (req, res) => {
             })
         }
 
-        console.log(mongoData);
+        // console.log(mongoData);
 
-        // const results = await App.insertMany(mongoData);
+        const results = await App.insertMany(mongoData);
 
         if (res)
             res.send({ header, table });
@@ -168,20 +169,69 @@ exports.getSystemUsage = async (req, res) => {
 exports.getPodSystemUsage = async (req, res) => {
 
     try {
-        const data = await kubectl.command('top pod -n kube-system');
-        // const data = await kubectl.command('top pod -n kube-system --use-protocol-buffers');
-        
-        let [header, ...table] = resolveTable(data);
-        // table.pop();
 
-        console.log('data', table)
-        
+        const deployments = await kubectl.command('get deployments');
+
+        // const data = await kubectl.command('top pod');
+        // const data = await kubectl.command('top pod -n kube-system --use-protocol-buffers');
+
+        let [header, ...table] = resolveTable(deployments);
+        table.pop();
+
+        let finalData = {};
+
+        let data = await kubectl.command(`top pods`);
+        let [header2, ...table2] = resolveTable(data);
+        table2.pop();
+
+        for (let [name, ...other] of table) {
+            finalData[name] = {
+                name: "",
+                cpu: 0,
+                memory: 0
+            };
+
+            for (let i = 0; i < table2.length;) {
+                let [currName, currCpu, currMemory] = table2[i];
+
+                if (currName.startsWith(name)) {
+                    finalData[name]["cpu"] += currCpu && parseInt(currCpu.match(/\d/g).join(''), 10) || 0;
+                    finalData[name]["memory"] += currMemory && parseInt(currMemory.match(/\d/g).join(''), 10) || 0;
+                    finalData[name]["name"] = currName;
+                    table2.splice(i, 1);
+                } else {
+                    i++;
+                }
+
+            }
+        }
+
+        let mongoData = [];
+
+        for (let key of Object.keys(finalData)) {
+            mongoData.push({
+                app_name: key,
+                pod_name: finalData[key]["name"],
+                cpu: finalData[key]["cpu"],
+                mem_usage: finalData[key]["memory"],
+            });
+        }
+        // console.log(mongoData);
+
+        const results = await SystemData.insertMany(mongoData);
+
+        if (res)
+            res.send({ header, table });
+        else
+            console.log("Added to db pod data");
+
+
     } catch (error) {
         if (res)
             res.status(500).send(error);
 
         console.log("ERROR: ", error);
-        
+
     }
 
 }
@@ -191,7 +241,7 @@ exports.sampleRoute = async (req, res) => {
 
     try {
         const results = await App.deleteMany({ "date": { $gt: new Date(2021, 03, 20) } });
-        
+
         res.send("Success!");
 
     } catch (error) {
