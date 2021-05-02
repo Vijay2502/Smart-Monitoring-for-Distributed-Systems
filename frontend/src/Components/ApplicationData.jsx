@@ -103,7 +103,7 @@ class ApplicationData extends Component {
                             var options2 = {
                                 animationEnabled: true,
                                 title: {
-                                  text: "Cluster name: "+this.state.mem[key].application_name,
+                                  text: "Application name: "+this.state.mem[key].application_name,
                                   fontFamily:"Segoe UI"
                                 },axisX: {
                                     valueFormatString: "DD MMM,YY HH:MM"
@@ -141,7 +141,7 @@ class ApplicationData extends Component {
                               var options = {
                                 animationEnabled: true,
                                 title: {
-                                  text: "Cluster name: "+this.state.cpu[key].application_name,
+                                  text: "Application name: "+this.state.cpu[key].application_name,
                                   fontFamily:"Segoe UI"
                                 },axisX: {
                                     valueFormatString: "DD MMM,YY HH:MM"

@@ -48,7 +48,7 @@ for key in uniqueAppNames:
                                freq=y.index.inferred_freq)
     
 
-    decomposition = sm.tsa.seasonal_decompose(y, model='additive', period = 3)
+    decomposition = sm.tsa.seasonal_decompose(y, model='additive', period = 4)
     p = d = q = range(0, 2)
     pdq = list(itertools.product(p, d, q))
     seasonal_pdq = [(x[0], x[1], x[2], 12) for x in list(itertools.product(p, d, q))]
