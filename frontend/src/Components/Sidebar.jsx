@@ -17,6 +17,7 @@ class Sidebar extends Component {
                         <MenuItem className={pathname === "/files" && "selected"} icon={<FontAwesomeIcon icon={faFolderOpen} />}><NavLink to="/files">Files</NavLink></MenuItem>
                         <MenuItem className={pathname === "/projectStatus" && "selected"} icon={<FontAwesomeIcon icon={faChartBar} />}><NavLink to="/projectStatus">Project Stats</NavLink></MenuItem>
                         <MenuItem className={pathname === "/clusterData" && "selected"} icon={<FontAwesomeIcon icon={faChartLine} />}><NavLink to="/clusterData">Cluster Data</NavLink></MenuItem>
+                        <MenuItem className={pathname === "/applicationData" && "selected"} icon={<FontAwesomeIcon icon={faChartLine} />}><NavLink to="/applicationData">Application Data</NavLink></MenuItem>
                     </Menu>
                 </ProSidebar>
             </nav>);

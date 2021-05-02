@@ -12,12 +12,12 @@ class ApplicationData extends Component {
     componentDidMount = async () => {
 
         //Cpu - Application
-        //const result = await Axios.get(`${process.env.REACT_APP_BACKEND}/getApplicationCPU`);
-        const result = await Axios.get(`http://localhost:3001/getApplicationCPU`);
+        const result = await Axios.get(`${process.env.REACT_APP_BACKEND}/getApplicationCPU`);
+        //const result = await Axios.get(`http://localhost:3001/getApplicationCPU`);
 
         //Memory - Application
-        //const result1 = await Axios.get(`${process.env.REACT_APP_BACKEND}/getApplicationMem`);
-        const result1 = await Axios.get(`http://localhost:3001/getApplicationMem`);
+        const result1 = await Axios.get(`${process.env.REACT_APP_BACKEND}/getApplicationMem`);
+        //const result1 = await Axios.get(`http://localhost:3001/getApplicationMem`);
         
         this.setState({
             cpu: result.data.applicationDict,
@@ -109,7 +109,7 @@ class ApplicationData extends Component {
                                     valueFormatString: "DD MMM,YY HH:MM"
                                 },
                                 axisY: {
-                                    title: "Memory Used %",
+                                    title: "Memory Usage",
                                     fontSize: 30
                                     //suffix: " %"
                                 },
@@ -124,14 +124,14 @@ class ApplicationData extends Component {
                                   {
                                     name: "Observed",
                                     type: "spline",
-                                    yValueFormatString: "# '%'",
+                                    yValueFormatString: "# 'Mi'",
                                     showInLegend: true,
                                     dataPoints: obsMem
                                   },
                                   {
                                     name: "Forecasted",
                                     type: "spline",
-                                    yValueFormatString: "# '%'",
+                                    yValueFormatString: "# 'Mi'",
                                     showInLegend: true,
                                     dataPoints: foreMem
                                 }
@@ -161,14 +161,14 @@ class ApplicationData extends Component {
                                   {
                                     name: "Observed",
                                     type: "spline",
-                                    yValueFormatString: "# '%'",
+                                    yValueFormatString: "#'m'",
                                     showInLegend: true,
                                     dataPoints: obs
                                   },
                                   {
                                     name: "Forecasted",
                                     type: "spline",
-                                    yValueFormatString: "# '%'",
+                                    yValueFormatString: "#'m'",
                                     showInLegend: true,
                                     dataPoints: fore
                                 }
@@ -193,4 +193,4 @@ class ApplicationData extends Component {
     }
 }
 
-export default ClusterData;
+export default ApplicationData;

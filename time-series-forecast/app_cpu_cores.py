@@ -1,10 +1,10 @@
-#pip install dnspython
-#pip install pymongo
+#Application - CPU
+#!pip install dnspython
+#!pip install pymongo
 import warnings
 import itertools
 import numpy as np
 import matplotlib.pyplot as plt
-#warnings.filterwarnings("ignore")
 import pandas as pd
 import statsmodels.api as sm
 import matplotlib
@@ -22,34 +22,34 @@ from pymongo import MongoClient
 from sklearn.metrics import median_absolute_error
 from sklearn.metrics import mean_absolute_error
 
-url = 'http://localhost:3001/postPythonData'
+url = 'http://localhost:3001/postApplicationCPU'
 
 #mongo connection
 client = pymongo.MongoClient("mongodb+srv://ayu:ayuadmin@cluster0.bmlds.mongodb.net/application-data?retryWrites=true&w=majority")
 mydb = client["application-data"]
-mycol = mydb["app"]
+mycol = mydb["sysData"]
 df = pd.DataFrame(list(mycol.find()))
 df['date'] = pd.to_datetime(df['date'], errors='coerce')
 df['date'] = df['date'].dt.floor('Min')
 dict={}
-uniquePodNames = df['pod_name'].unique()
+uniqueAppNames = df['app_name'].unique()
 sum_cpu_usage_rmse=0
 sum_cpu_usage_mse=0
 sum_cpu_mean_ae=0
 sum_cpu_median_ae=0
-for key in uniquePodNames:
-    df1 = df[df['pod_name'] == key]
+for key in uniqueAppNames:
+    df1 = df[df['app_name'] == key]
     start=df1['date'].iloc[0]
     end=df1['date'].iloc[df1.shape[0]-1]
     y = df1.set_index('date')
     df1.index = pd.DatetimeIndex(df1.index)
-    y = y['cpu_usage']
+    y = y['cpu']
     y.sort_index(inplace= True)
     y.index = pd.DatetimeIndex(y.index.values,
                                freq=y.index.inferred_freq)
     
 
-    decomposition = sm.tsa.seasonal_decompose(y, model='additive', period = 4)
+    decomposition = sm.tsa.seasonal_decompose(y, model='additive', period = 3)
     p = d = q = range(0, 2)
     pdq = list(itertools.product(p, d, q))
     seasonal_pdq = [(x[0], x[1], x[2], 12) for x in list(itertools.product(p, d, q))]
@@ -96,13 +96,13 @@ for key in uniquePodNames:
     pred_uc = results.get_forecast(steps=200)
     
     #create dict
-    myobj = {'cluster_name': df1['pod_name'].iloc[0], 'observed': y.to_json(), 'forecast': pred_uc.predicted_mean.to_json()}
-    dict[df1['pod_name'].iloc[0]]=myobj
+    myobj = {'application_name': df1['app_name'].iloc[0], 'observed': y.to_json(), 'forecast': pred_uc.predicted_mean.to_json()}
+    dict[df1['app_name'].iloc[0]]=myobj
 
-print("Average MSE for cpu_usage_node: ", sum_cpu_usage_mse/uniquePodNames.size)
-print("Average RMSE for cpu_usage_node: ", sum_cpu_usage_rmse/uniquePodNames.size)
-print("Average Median Absolute Error for cpu_usage_node: ", sum_cpu_median_ae/uniquePodNames.size)
-print("Average Mean Absolute Error for cpu_usage_node: ", sum_cpu_mean_ae/uniquePodNames.size)
+print("Average MSE for cpu_cores_application forecast: ", sum_cpu_usage_mse/uniqueAppNames.size)
+print("Average RMSE for cpu_cores_application: ", sum_cpu_usage_rmse/uniqueAppNames.size)
+print("Average Median Absolute Error for cpu_cores_application: ", sum_cpu_median_ae/uniqueAppNames.size)
+print("Average Mean Absolute Error for cpu_cores_application: ", sum_cpu_mean_ae/uniqueAppNames.size)
 #post data to node.js
 x = requests.post(url, json = dict)
 #print response from node.js

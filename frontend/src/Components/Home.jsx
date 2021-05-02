@@ -9,6 +9,7 @@ import ProjectView from './ProjectView';
 import ProjectStatus from './ProjectStatus';
 import FileView from './FileView';
 import ClusterData from './ClusterData';
+import ApplicationData from './ApplicationData';
 
 class Home extends Component {
     state = {}
@@ -38,6 +39,9 @@ class Home extends Component {
                         </Route>
                         <Route path={`${match.path}clusterData`}>
                             <ClusterData />
+                        </Route>
+                        <Route path={`${match.path}applicationData`}>
+                            <ApplicationData />
                         </Route>
 
                         <Route path={`${match.path}`}>
