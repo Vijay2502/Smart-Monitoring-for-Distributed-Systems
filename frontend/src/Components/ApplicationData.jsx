@@ -13,11 +13,11 @@ class ApplicationData extends Component {
 
         //Cpu - Application
         const result = await Axios.get(`${process.env.REACT_APP_BACKEND}/getApplicationCPU`);
-        //const result = await Axios.get(`http://localhost:3001/getApplicationCPU`);
-
+        //const result = await Axios.get(`http://34.122.135.247:3001/getApplicationCPU`);
+        console.log(result);
         //Memory - Application
         const result1 = await Axios.get(`${process.env.REACT_APP_BACKEND}/getApplicationMem`);
-        //const result1 = await Axios.get(`http://localhost:3001/getApplicationMem`);
+        //const result1 = await Axios.get(`http://34.122.135.247:3001/getApplicationMem`);
         
         this.setState({
             cpu: result.data.applicationDict,
@@ -46,7 +46,8 @@ class ApplicationData extends Component {
                             
                             //plot observed cpu
                             var keys1 = Object.keys(JSON.parse(this.state.cpu[key].observed));
-                            for (var i = 0; i < keys1.length; i++) {
+                            var i= (keys1.length>800) ? keys1.length-800 : 0;
+                            for (i; i < keys1.length; i++) {
                                  var keycurr = keys1[i];
                                  if(!obs.length){
                                     obs = [
@@ -74,9 +75,10 @@ class ApplicationData extends Component {
                              console.log(fore);
                              console.log(fore.length);
 
-                             //plot observed mem percentage
+                             //plot observed mem usage
                             var keys3 = Object.keys(JSON.parse(this.state.mem[key].observed));
-                            for (var k = 0; k < keys3.length; k++) {
+                            var k= (keys3.length>800) ? keys3.length-800 : 0;
+                            for (k; k < keys3.length; k++) {
                                  var keycurr3 = keys3[k];
                                  if(!obsMem.length){
                                     obsMem = [
@@ -87,7 +89,7 @@ class ApplicationData extends Component {
                                  }
                              }
 
-                            //plot forecasted mem percentage
+                            //plot forecasted mem usage
                             var keys4 = Object.keys(JSON.parse(this.state.mem[key].forecast));
                             for (var l = 0; l < keys4.length; l++) {
                                  var keycurr4 = keys4[l];
@@ -177,7 +179,7 @@ class ApplicationData extends Component {
 
                             return( 
                             
-                                <Fragment>
+                                <Fragment key={key}>
                                     <CanvasJSChart options = {options}/>
                                     <br/>
                                     <CanvasJSChart options = {options2}/>
