@@ -12,13 +12,12 @@ class ClusterData extends Component {
     componentDidMount = async () => {
 
         //Cpu Usage
-        const result = await Axios.get(`${process.env.REACT_APP_BACKEND}/getPythonData`);
-        //const result = await Axios.get(`http://34.122.135.247:3001/getPythonData`);
+        //const result = await Axios.get(`${process.env.REACT_APP_BACKEND}/getPythonData`);
+        const result = await Axios.get(`http://34.122.135.247:3001/getPythonData`);
 
         //Memory percentage
-        const result1 = await Axios.get(`${process.env.REACT_APP_BACKEND}/getPythonMemPercentage`);
-        //const result1 = await Axios.get(`http://34.122.135.247:3001/getPythonMemPercentage`);
-        //console.log("mem usage",result1.data.pythonDict2);
+        //const result1 = await Axios.get(`${process.env.REACT_APP_BACKEND}/getPythonMemPercentage`);
+        const result1 = await Axios.get(`http://34.122.135.247:3001/getPythonMemPercentage`);
         
         this.setState({
             content: result.data.pythonDict,
@@ -47,7 +46,8 @@ class ClusterData extends Component {
                             
                             //plot observed cpu
                             var keys1 = Object.keys(JSON.parse(this.state.content[key].observed));
-                            var i= (keys1.length>800) ? keys1.length-800 : 0;
+                            //var i= (keys1.length>800) ? keys1.length-800 : 0;
+                            var i=0;
                             for (i; i < keys1.length; i++) {
                                  var keycurr = keys1[i];
                                  if(!obs.length){
@@ -78,7 +78,8 @@ class ClusterData extends Component {
 
                              //plot observed mem percentage
                             var keys3 = Object.keys(JSON.parse(this.state.memPercentage[key].observed));
-                            var k= (keys3.length>800) ? keys3.length-800 : 0;
+                            //var k= (keys3.length>800) ? keys3.length-800 : 0;
+                            var k=0;
                             for (k; k < keys3.length; k++) {
                                  var keycurr3 = keys3[k];
                                  if(!obsMem.length){
@@ -105,6 +106,7 @@ class ClusterData extends Component {
 
                             var options2 = {
                                 animationEnabled: true,
+                                zoomEnabled:true,
                                 title: {
                                   text: "Cluster name: "+this.state.memPercentage[key].cluster_name,
                                   fontFamily:"Segoe UI"
@@ -143,6 +145,7 @@ class ClusterData extends Component {
 
                               var options = {
                                 animationEnabled: true,
+                                zoomEnabled:true,
                                 title: {
                                   text: "Cluster name: "+this.state.content[key].cluster_name,
                                   fontFamily:"Segoe UI"

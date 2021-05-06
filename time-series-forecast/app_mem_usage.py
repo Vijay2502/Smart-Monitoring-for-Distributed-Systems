@@ -19,7 +19,7 @@ from pymongo import MongoClient
 from sklearn.metrics import median_absolute_error
 from sklearn.metrics import mean_absolute_error
 
-url2 = 'http://localhost:3001/postApplicationMem'
+url2 = 'http://34.122.135.247:3001/postApplicationMem'
 
 #mongo connection
 client = pymongo.MongoClient("mongodb+srv://ayu:ayuadmin@cluster0.bmlds.mongodb.net/application-data?retryWrites=true&w=majority")
@@ -48,12 +48,14 @@ for key in uniqueAppNames:
                                freq=y.index.inferred_freq)
     
 
-    decomposition = sm.tsa.seasonal_decompose(y, model='additive', period = 4)
+    #decomposition = sm.tsa.seasonal_decompose(y, model='additive', period = 4)
+    #fig = decomposition.plot()
+    #plt.show()
     p = d = q = range(0, 2)
-    pdq = list(itertools.product(p, d, q))
-    seasonal_pdq = [(x[0], x[1], x[2], 12) for x in list(itertools.product(p, d, q))]
+    trend_pdq = list(itertools.product(p, d, q))
+    seasonal_pdq = [(x[0], x[1], x[2], 7) for x in list(itertools.product(p, d, q))]
     min=100000000
-    for param in pdq:
+    for param in trend_pdq:
         for param_seasonal in seasonal_pdq:
             try:
                 mod = sm.tsa.statespace.SARIMAX(y,order=param,seasonal_order=param_seasonal,enforce_stationarity=False,enforce_invertibility=False)
@@ -66,20 +68,17 @@ for key in uniqueAppNames:
                 continue
     
     #create model
-    mod = sm.tsa.statespace.SARIMAX(y,
-                                order=param_selected,
-                                seasonal_order=param_seasonal_selected,
-                                enforce_stationarity=False,
-                                enforce_invertibility=False)
+    model = sm.tsa.statespace.SARIMAX(y,order=param_selected,seasonal_order=param_seasonal_selected,enforce_stationarity=False,enforce_invertibility=False)
+    
     #fit model
-    results = mod.fit()
+    results = model.fit()
  
     #get prediction
     pred = results.get_prediction(start=pd.to_datetime(start), end=pd.to_datetime(end), dynamic=False)
     
     #calculate rmse
     y_forecasted = pred.predicted_mean
-    y_truth = y['2017-01-15':]
+    y_truth = y['2021-01-15':]
     mse = ((y_forecasted - y_truth) ** 2).mean()
     sum_mem_usage_mse= sum_mem_usage_mse + mse
     sum_mem_usage_rmse=sum_mem_usage_rmse +(round(np.sqrt(mse), 2))
@@ -91,10 +90,10 @@ for key in uniqueAppNames:
     sum_mem_mean_ae=sum_mem_mean_ae+(mean_absolute_error(y_truth, y_forecasted))
     
     #get forecast
-    pred_uc = results.get_forecast(steps=200)
+    forecast = results.get_forecast(steps=400)
 
     #create dictionary
-    myobj2 = {'application_name': df1['app_name'].iloc[0], 'observed': y.to_json(), 'forecast': pred_uc.predicted_mean.to_json()}
+    myobj2 = {'application_name': df1['app_name'].iloc[0], 'observed': y.to_json(), 'forecast': forecast.predicted_mean.to_json()}
     dict2[df1['app_name'].iloc[0]]=myobj2
 
 print("Average MSE for memory_usage_application: ", sum_mem_usage_mse/uniqueAppNames.size)
