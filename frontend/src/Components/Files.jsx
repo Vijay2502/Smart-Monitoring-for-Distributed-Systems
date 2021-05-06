@@ -3,11 +3,15 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Axios from "axios";
 import Table from 'react-bootstrap/Table';
+import Form from 'react-bootstrap/Form';
 import { NavLink } from 'react-router-dom';
+import DatePicker from 'react-date-picker';
 
 class Files extends Component {
     state = {
-        files: []
+        files: [],
+        startDate: null,
+        endDate: null
     }
 
     componentDidMount = async () => {
@@ -21,8 +25,16 @@ class Files extends Component {
         }
     }
 
+    onChange = (e) => {
+        this.setState({ startDate: e });
+    }
+    onChange2 = (e) => {
+        this.setState({ endDate: e });
+    }
+
     render() {
         let { files } = this.state;
+
         return (
             <Fragment>
                 <div className="screen-wrapper">
@@ -33,6 +45,26 @@ class Files extends Component {
                     </Row>
 
                     <div className="border-header"></div>
+                    <Row>
+                        <Col sm={3}>
+                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                <Form.Label className="mr-3">Start Date: </Form.Label>
+                                <DatePicker
+                                    onChange={this.onChange}
+                                    value={this.state.startDate}
+                                />
+                            </Form.Group>
+                        </Col>
+                        <Col sm={3}>
+                            <Form.Group controlId="exampleForm.ControlSelect1">
+                                <Form.Label className="mr-3">End Date: </Form.Label>
+                                <DatePicker
+                                    onChange={this.onChange2}
+                                    value={this.state.endDate}
+                                />
+                            </Form.Group>
+                        </Col>
+                    </Row>
                     <Row>
                         <Col>
                             <Table striped bordered hover responsive variant="" className="mt-4" style={{ textAlign: "center" }}>
@@ -47,17 +79,23 @@ class Files extends Component {
                                 </thead>}
                                 <tbody>
                                     {
-                                        files.length > 0 && files.map((file, i) => {
-                                            let date = new Date(file.modified);
+                                        files.length > 0 && files.filter((curr) => {
+                                            let startDate = this.state.startDate === null ? true : new Date(curr.modified) >= new Date(this.state.startDate);
+                                            let endDate = this.state.endDate === null ? true : new Date(curr.modified) <= new Date(this.state.endDate);
 
-                                            return <tr key={i}>
-                                                <td>{file.key}</td>
-                                                <td>{`${date.toLocaleDateString()}  ${date.toLocaleTimeString()}`}</td>
-                                                <td>{file.size}</td>
-                                                <td><NavLink to={{ pathname: `/fileView`, state: { key: file.actualKey } }}>View Details</NavLink></td>
-                                                <td><a href={file.file_url.replaceAll("+", "%2B")} target="_blank" rel="noreferrer">Download</a></td>
-                                            </tr>
+                                            return startDate && endDate;
                                         })
+                                            .map((file, i) => {
+                                                let date = new Date(file.modified);
+
+                                                return <tr key={i}>
+                                                    <td>{file.key}</td>
+                                                    <td>{`${date.toLocaleDateString()}  ${date.toLocaleTimeString()}`}</td>
+                                                    <td>{file.size}</td>
+                                                    <td><NavLink to={{ pathname: `/fileView`, state: { key: file.actualKey } }}>View Details</NavLink></td>
+                                                    <td><a href={file.file_url.replaceAll("+", "%2B")} target="_blank" rel="noreferrer">Download</a></td>
+                                                </tr>
+                                            })
                                     }
                                 </tbody>
                             </Table>
