@@ -15,7 +15,7 @@ from pymongo import MongoClient
 from sklearn.metrics import median_absolute_error
 from sklearn.metrics import mean_absolute_error
 
-url = 'http://34.122.135.247:3001/postPythonData'
+url = 'http://34.72.63.188:3001/postPythonData'
 
 #mongo connection
 client = pymongo.MongoClient("mongodb+srv://ayu:ayuadmin@cluster0.bmlds.mongodb.net/application-data?retryWrites=true&w=majority")
@@ -32,14 +32,24 @@ sum_cpu_mean_ae=0
 sum_cpu_median_ae=0
 for key in uniquePodNames:
     df1 = df[df['pod_name'] == key]
-    start=df1['date'].iloc[0]
-    end=df1['date'].iloc[df1.shape[0]-1]
+    
+    df1=df1.set_index('date')
+    
+    all = pd.Series(data=pd.date_range(start=df1.index.min(), end=df1.index.max(), freq='2min'))
+    mask = all.isin(df1.index.values)
+    for miss_date in all[~mask]:
+        miss_df = {'pod_name': key, 'date': miss_date, 'cpu_usage': 0, 'cpu' : 0, 'mem_usage' : 0, 'mem_percentage':0}
+        df = df.append(miss_df, ignore_index = True)
+    
+    df1 = df[df['pod_name'] == key]
+    
     y = df1.set_index('date')
     df1.index = pd.DatetimeIndex(df1.index)
     y = y['cpu_usage']
     y.sort_index(inplace= True)
-    y.index = pd.DatetimeIndex(y.index.values,
-                               freq=y.index.inferred_freq)
+    y.index = pd.DatetimeIndex(y.index.values,freq=y.index.inferred_freq)
+    start=y.index.min()
+    end=y.index.max()
     
 
     #decomposition = sm.tsa.seasonal_decompose(y, model='additive', period = 4)
