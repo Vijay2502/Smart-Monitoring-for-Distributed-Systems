@@ -4,11 +4,11 @@ services:
     container_name: backend
     build:
       context: .
-    volumes:
-      - ./:/usr/src/backend
+    # volumes:
+    #   - ./:/usr/src/backend
     command: ./a.sh
     ports:
-      - "3002:3001"
+      - "3001:3001"
     networks:
       - net
 networks:

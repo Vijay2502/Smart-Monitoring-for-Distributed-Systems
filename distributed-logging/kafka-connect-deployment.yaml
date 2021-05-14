@@ -63,7 +63,7 @@ spec:
               value: org.apache.kafka.connect.json.JsonConverter
             - name: CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE
               value: "false"
-          image: kafka-connect
+          image: vijay2502/kafka-connect 
           name: kafka-connect
           resources: {}
       restartPolicy: Always
