@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-deployment
+spec:
+  selector:
+    matchLabels:
+      app: gumball
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gumball
+    spec:
+      containers:
+      - name: gumball
+        image: vijay2502/gumball
+        # imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
