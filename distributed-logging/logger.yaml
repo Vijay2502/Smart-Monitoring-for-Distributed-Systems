@@ -21,9 +21,9 @@ spec:
       - key: node-role.kubernetes.io/master
         effect: NoSchedule
       containers:
-      - image: fluentd
+      - image: vijay2502/fluentd
         name: fluentd
-        imagePullPolicy: Never
+      #  imagePullPolicy: Never
         resources:
           limits:
             memory: 200Mi

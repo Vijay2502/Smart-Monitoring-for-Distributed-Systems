@@ -46,10 +46,8 @@ services:
         dockerfile: Dockerfile-kafka-connect
       depends_on:
         - kafka
-        - elasticsearch
       links:
         - kafka
-        - elasticsearch
       environment:
         CONNECT_BOOTSTRAP_SERVERS: kafka:9092
         CONNECT_GROUP_ID: 1
@@ -70,15 +68,4 @@ services:
         AWS_ACCESS_KEY_ID: "****************************"
         AWS_SECRET_ACCESS_KEY: "****************************************"
         AWS_DEFAULT_REGION: "us-west-1"
-    elasticsearch:
-      image: elasticsearch:7.11.1
-      expose:
-        - 9200
-      ports:
-        - "9200:9200"
-    kibana:
-      image: kibana:7.11.1
-      links:
-        - "elasticsearch"
-      ports:
-        - "5601:5601"
+    

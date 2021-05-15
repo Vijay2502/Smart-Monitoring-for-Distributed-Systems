@@ -27,9 +27,6 @@ spec:
       containers:
         - image: fluentd
           name: fluentd
-          imagePullPolicy: Never
-          ## command: ["/bin/sh"]
-          ## args: ["-c", "mkdir -p /buffer && gem install fluent-plugin-kafka --no-doc --version 0.7.9 && /fluentd/entrypoint.sh"]
           ports:
             - containerPort: 24224
             - containerPort: 24224

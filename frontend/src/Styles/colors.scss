@@ -1,0 +1,23 @@
+// Import Bootstrap and its default variables
+@import '~bootstrap/scss/bootstrap.scss';
+
+
+// $primaryColor: #E27D60;
+// $secondaryColor: #49c5b6;
+// $lightOrange: #e8a87c;
+// $pink: #c38d9e;
+// $green: #41b3a3;
+
+
+$primaryColor: #262A34;
+$secondaryColor: #04395E;
+$thirdColor: #70a288;
+$fourthColor: #B36A5E;
+$fifthColor: #D5896F;
+
+
+
+$sidebar-bg-color: transparent;
+$icon-bg-color: transparent;
+$sidebar-color: $fourthColor;
+$highlight-color: $fifthColor;

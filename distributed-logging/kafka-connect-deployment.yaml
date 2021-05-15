@@ -26,11 +26,11 @@ spec:
       containers:
         - env:
             - name: AWS_ACCESS_KEY_ID
-              value: ''
+              value: '****************************'
             - name: AWS_DEFAULT_REGION
               value: us-west-1
             - name: AWS_SECRET_ACCESS_KEY
-              value: ''
+              value: '****************************************'
             - name: CONNECT_BOOTSTRAP_SERVERS
               value: kafka:9092
             - name: CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR
@@ -63,9 +63,8 @@ spec:
               value: org.apache.kafka.connect.json.JsonConverter
             - name: CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE
               value: "false"
-          image: kafka-connect
+          image: vijay2502/kafka-connect 
           name: kafka-connect
-          imagePullPolicy: Never
           resources: {}
       restartPolicy: Always
 status: {}
